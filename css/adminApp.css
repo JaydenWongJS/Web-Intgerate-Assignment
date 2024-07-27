@@ -1,0 +1,538 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Crimson Text", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+i {
+  margin: 0px 5px;
+  font-size: 13px;
+}
+
+a{
+  text-decoration: none;
+}
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: #222222;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  ;
+  align-items: center;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.navDashboardUrl {
+  font-size: 17px;
+  text-align: center;
+  width: 90%;
+  display: block;
+  color: white;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.navDashboardUrl.active {
+  background-color: white;
+  color: black;
+  font-weight: 700;
+}
+
+.navDashboardUrl:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+.manageDropdown {
+  display: none;
+  /* Hide the dropdown by default */
+  background-color: #222222;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* Optional: Add shadow for better visibility */
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  /* Transition for smooth effect */
+}
+
+.manageDropdown.show {
+  border:2px solid grey;
+  display: block;
+  /* Show the dropdown */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.manageDropdown a {
+  border-bottom: 2px solid grey;
+  text-align: end;
+  width: 100%;
+  display: block;
+  /* Make each link a block element */
+  padding: 10px;
+  padding-right: 20px;
+  text-decoration: none;
+  /* Remove underline from links */
+  color: white;
+  /* Set link color */
+}
+
+.manageDropdown a:hover {
+  background-color: #f1f1f1;
+  /* Optional: Add a hover effect */
+}
+
+
+.logo {
+  margin-top: 50px;
+  margin-bottom: 20px;
+  width: 70px;
+  height: 70px;
+}
+
+.manageDropdown {
+  width: 80%;
+}
+
+.side_bar_login_info {
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  border-top: 2px solid white;
+  color: white;
+  font-size: 17px;
+  letter-spacing: 1.1px;
+  line-height: 1.5em;
+}
+
+.dashboard_container {
+  margin-left: 200px;
+  height: 1000px;
+}
+
+.title {
+  font-size: 25px;
+  width: 100%;
+  background-color: white;
+  padding: 20px 30px;
+  margin: 15px 0px 3px 0px;
+}
+
+.dashboard-header {
+  background-color: #d3d3d3;
+  /* Light gray background color */
+  color: #333;
+  /* Darker text color */
+  padding: 10px 20px;
+  /* Padding for spacing */
+  font-size: 20px;
+  /* Font size */
+}
+
+.dashboard-header p {
+  padding-left: 40px;
+}
+
+.statistics_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.statistics_box {
+  color: #f1f1f1;
+  font-size: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 20px;
+  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  border-radius: 20px;
+  transition: 0.3s ease;
+}
+
+.statistics_box:nth-child(1) {
+  background-color: #0781fa;
+}
+
+.statistics_box:nth-child(2) {
+  background-color: #ffbf0f;
+}
+
+.statistics_box:nth-child(3) {
+  background-color: #27a850;
+}
+
+.statistics_box:nth-child(4) {
+  background-color: #d45060;
+}
+
+
+
+.icon_box {
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  margin-right: 5px;
+}
+
+.icon_box i {
+  font-size: 32px;
+}
+
+.statistics_details p {
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .navDashboardUrl {
+    float: left;
+  }
+
+  .dashboard_container {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .navDashboardUrl {
+    text-align: center;
+    float: none;
+  }
+}
+
+.sum_percentage_box{
+  margin:20px 0px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+ align-items: center;
+ gap:50px;
+  background-color: #ddd;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 400px;
+  text-align: center;
+}
+
+.card-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.card-header .profit p {
+  font-size:22px;
+  color: #888;
+}
+
+.card-header {
+  margin: 5px 0;
+}
+
+
+
+.card-body {
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-body .order,
+.card-body .orderCancel {
+  width: 45%;
+}
+
+.order i,.orderCompletedPercentage{
+  color:#4caf50;
+}
+
+.orderCancel i,.orderUnCompletedPercentage{
+  color:#f44336;
+}
+
+.card-body .order i,
+.card-body .orderCancel i {
+  margin-bottom: 5px;
+}
+
+.card-body h3 {
+  margin: 5px 0;
+}
+
+.review_card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 800px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.review_card .card-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.review_card .card-header p {
+  color: #333;
+  font-weight: bold;
+}
+
+.circle-container {
+  display: flex;
+  align-items: center;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: conic-gradient(#4caf50 0% 0%,#ddd,0% 0%,  #f44336 0% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-right: 20px;
+  transition: background 0.3s;
+}
+
+.inside-circle {
+  width: 70%;
+  height: 70%;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.review_card .card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review_card .card-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.review_card .card-body li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.dot {
+  margin:0px 10px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.positive {
+  font-size: 18px;
+  background-color: #4caf50;
+}
+
+.negative {
+  font-size: 18px;
+  background-color: #f44336;
+}
+
+.neutral{
+  font-size: 18px;
+  background-color: #ddd;
+}
+.percent {
+  color: #888;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/** ---- Admin Order ---- **/
+
+
+.filter {
+  margin:15px auto;
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-order-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #000;
+  color: #fff;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-button i {
+  font-size: 16px;
+}
+
+.sorting-form {
+  display: flex;
+  align-items: center;
+}
+
+.form-select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+table.order-table {
+  margin:50px auto;
+  width: 90%;
+  border-collapse: collapse;
+}
+
+table.order-table th,
+table.order-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table.order-table th {
+  background-color: #f2f2f2;
+}
+
+table.order-table td button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border:3px solid black;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+table.order-table td button.view-button {
+  background-color: #000;
+  transition: 0.5s ease;
+}
+table.order-table td button.view-button:hover{
+  background-color: transparent;
+  color:#000;
+  border:3px solid #000;
+  font-weight: bold;
+}
+
+.invoice-button {
+  font-size: 0.8rem;
+  padding: 5px 5px;
+  text-decoration: none;
+  color:white;
+  background-color: #555;
+  border:3px solid #555;
+  transition: 0.5s ease;
+}
+
+.invoice-button:hover{
+  background-color: transparent;
+  color:#000;
+}
+
+/** ----- Members Page --- */
+.flex_active_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:10px;
+}
+.active-button,.inactive-button{
+  cursor: pointer;
+  color: #fff;
+  padding: 7px 12px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.active-button:hover,.inactive-button:hover{
+  opacity: 0.8;
+}
+
+.active-button{
+  border:2px solid #27a850;
+  background-color: #27a850;
+}
+
+.inactive-button{
+  border:2px solid #d82237;
+  background-color: #d82237;
+}
+.status{
+  color:green;
+  font-weight: bold;
+}

@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+/* Basic reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: 'Crimson Text', sans-serif;
+}
+
+.login-form {
+    width: 700px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title{
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.title small{
+    color: #666666;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-color: #ffffff;
+}
+.title h1::before{
+position: absolute;
+content: ' ';
+border-radius: 50%;
+padding: 20px;
+background-color: #0099ff;
+top:-50px;
+left:10px;
+}
+
+.title h1::after{
+    position: absolute;
+    content: ' ';
+    border-radius: 50%;
+    padding: 20px;
+    background-color: #0099ff;
+    top:-50px;
+    right:10px;
+    }
+.title h1{
+    font-size:40px;
+    text-shadow: 5px 5px 7px rgb(212, 212, 212);
+    margin-top: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0099ff;
+}
+
+
+.container {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-left: 1px solid rgb(202, 200, 200);
+    padding: 20px;
+}
+
+.input-group {
+    width: 100%;
+    position: relative;
+    margin: 20px 8px;
+}
+
+.input-group label {
+    font-weight: 700;
+    position: absolute;
+    top: 40%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: grey;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    font-size: 20px; /* Adjust the font size as needed */
+}
+
+
+.input-group i {
+    position: absolute;
+    top: 20%;
+    right: 10px;
+    color: grey;
+   cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 18px; /* Adjust the font size as needed */
+}
+
+.input-text {
+    font-size:15px;
+    font-weight: bolder;
+    width: 100%;
+    padding: 10px 20px 10px 10px;
+    border: none;
+    border-bottom: 1px solid grey;
+    outline: none;
+}
+
+.input-text:focus + label,
+.input-text:not(:placeholder-shown) + label {
+    top: 0;
+    transform: translateY(-90%);
+    font-size: 16px; /* Adjust the font size as needed */
+}
+
+.login-form button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 10px;
+    background-color: #0099ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 800;
+    transition: 0.2s ease-in-out;
+}
+
+.login-form button:hover {
+    background-color: #0077cc;
+}
+
+#submitButton:disabled {
+    background-color: #cccccc; /* Grey background color for disabled state */
+    color: #666666; /* Grey text color for disabled state */
+    cursor: not-allowed;
+}
+
+.register{
+    margin-top: 20px;
+    text-align: end;
+    width: 100%;
+    font-size: 14px;
+}
+
+.invalid {
+    width: 100%;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 15px;
+    font-weight: 700;
+    display: none;
+    margin-bottom: 10px;
+}
+.invalid i {
+    margin:0px 8px;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; bottom: 0; left: 0; right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 1.5s ease 0s 1 normal forwards;
+}
+
+@keyframes scaleIn {
+	0% {
+		transform: scale(0);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+.modal img {
+    display: block;
+    margin: 0 auto;
+}
+
+.modal p {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.modal button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.forget-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.left_forget {
+    position: relative;
+    width: 50%;
+}
+.left_forget img {
+    position: absolute;
+    top:-70px;
+    height: auto;
+}
+
+
+.right_forget{
+    margin-top:50px;
+}
+.right_forget .input-text {
+    background-color: transparent;
+}
+
+.black-button {
+    margin-top:10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: black;
+    border: 2px solid black;
+    background-color: white; /* Optional: to keep the background white */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+.black-button:hover {
+    color: black;
+    background-color: white; /* Optional: to keep the background white */
+}
+
+.backLoginBox{
+    width: 100%;
+    margin-top: 20px;
+    text-align: end;
+}
+.forgetPasswordBox{
+    text-align: end;
+    width: 100%;
+    margin:0;
+    padding:0;
+}
+.backToLogin,.forgetPassword{
+    color:grey;
+
+}
+
+.body_forget_password{
+    flex-direction: column;
+}
+.titleForget{
+    margin-bottom: 80px;
+    padding:10px;
+    background-color: black;
+    color:#ffffff;
+    width: 100%;
+}
+
+#info {
+    position: fixed;
+    color: #fff;
+    background: #666;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px 20px;
+    left: 50%;
+    translate: -50% 0;
+
+    top: -100px;
+    opacity: 0;
+    z-index:999;
+}
+
+#info:not(:empty) {
+    animation: fade 5s;
+}
+
+@keyframes fade {
+      0% { top: -100px; opacity: 0; }
+     10% { top:  100px; opacity: 1; }
+     90% { top:  100px; opacity: 1; }
+    100% { top: -100px; opacity: 0; }
+}
