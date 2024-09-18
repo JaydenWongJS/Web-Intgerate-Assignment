@@ -11,7 +11,7 @@
             <a class="<?= ($title == 'Members') ? 'active ' : '' ?> navDashboardUrl" href="memberPage.php">
                 <i class="fas fa-users"></i> Members
             </a>
-            <a class="navDashboardUrl<?= ($title == 'Reviews') ? 'active ' : '' ?> " href="#">
+            <a class="navDashboardUrl<?= ($title == 'Reviews') ? 'active ' : '' ?> " href="reviewPage.php">
                 <i class="fas fa-comments"></i> Reviews
             </a>
             <a class="navDashboardUrl <?= ($title == 'Products') ? 'active ' : '' ?>" href="adminProductPage.php">
