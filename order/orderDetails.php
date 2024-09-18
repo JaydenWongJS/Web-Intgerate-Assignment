@@ -1,8 +1,8 @@
 <?php
 $title = "Order Details";
-require_once('../_base.php');
-include('../_header.php');
-include('../nav_bar.php');
+require_once('_base.php');
+include('_header.php');
+include('nav_bar.php');
 
 clear_cart();
 
@@ -14,6 +14,7 @@ if (!$orderId) {
     redirect("myOrder.php");
     exit;
 }
+
 
 // Retrieve order details
 $sqlOrder = "SELECT *
@@ -122,7 +123,7 @@ $subtotal_all_products = 0;
 
         <!-- Status with icons based on the status -->
         <p>Status :
-            <span class="status" style="
+            <span class="status" 
         <?php
         if ($order['order_status'] == 'Pending') {
             echo 'color: #ff8c00;'; // Dark orange
@@ -145,11 +146,6 @@ $subtotal_all_products = 0;
         <div style="padding: 15px; border: 1px solid #ccc; border-radius: 10px; ">
             <p style="font-size: 18px; font-weight: bold;">
                 <i class="fas fa-calendar-day" style="color: #007bff;"></i> Ordered Date:
-                <span style="color: #000;"><?= htmlspecialchars($order['order_date']) ?></span>
-            </p>
-
-            <p style="font-size: 18px; font-weight: bold;">
-                <i class="fas fa-calendar-day" style="color: #007bff;"></i> Created Date:
                 <span style="color: #000;"><?= htmlspecialchars($order['order_created_time']) ?></span>
             </p>
 
@@ -257,44 +253,11 @@ $subtotal_all_products = 0;
             <p><?= htmlspecialchars($order['state']) ?></p>
             <p><?= htmlspecialchars($order['postcode']) ?></p>
         </div>
-        <?php
-        if ($order['order_status'] != "Pending" && $payment['payment_status'] === "Completed") {
-        ?>
-            <div style="display: flex;">
-                <a class="pending_order" href="view_invoice.php?order_id=<?= urlencode($orderId) ?>" target="_blank">
-                    View Invoice
-                </a>
-                 <!--RON ADD HERE-->
-     <div class="review-header">
-            <?php if ($order['order_status'] === 'Completed'): ?>
-                <?php
-                // check the date whether over 14 days after "completed"
-                $orderCompletedDate = new DateTime($order['order_completed_date']);
-                $currentDate = new DateTime();
-                $interval = $currentDate->diff($orderCompletedDate);
-                $daysSinceCompletion = $interval->days;
-                ?>
-                <?php if ($daysSinceCompletion > 14): ?>
-                    <p style="color: red; font-weight: bold;">You cannot write a review after 14 days from order completion.</p>
-                <?php else: ?>
-                    <a class="writeReview" href="addReview.php?order_id=<?= htmlspecialchars($orderId) ?>" id="write-review">WRITE A REVIEW</a>
-                <?php endif; ?>
-            <?php else: ?>
-                <p style="color: red; font-weight: bold;">You can only write a review after the order is completed.</p>
-            <?php endif; ?>
-        </div>
-            </div>
-
-            
-        <?php
-        }
-        ?>
-
-
     </div>
 
 
 </div>
+
 
 <table class="styled-table-orderDetails">
     <thead>
@@ -313,7 +276,7 @@ $subtotal_all_products = 0;
         <?php foreach ($productDetails as $index => $detail): ?>
             <tr>
                 <td><?= $index + 1 ?></td>
-                <td><img src="../uploadsImage/productImage/<?= htmlspecialchars($detail['productImage']) ?>" alt="<?= $detail['productImage'] ?>"></td>
+                <td><img src="uploadsImage/productImage/<?= htmlspecialchars($detail['productImage']) ?>" alt="<?= $detail['productImage'] ?>"></td>
                 <td><?= htmlspecialchars($detail['productName']) ?></td>
                 <td style="text-transform: capitalize;"><?= htmlspecialchars($detail['attributesType'] . ' - ' . $detail['optionValue']) ?></td>
                 <td>x <?= htmlspecialchars($detail['qty']) ?></td>
@@ -352,4 +315,4 @@ $subtotal_all_products = 0;
 </div>
 
 
-<?php include('../_footer.php'); ?>
+<?php include('_footer.php'); ?>
