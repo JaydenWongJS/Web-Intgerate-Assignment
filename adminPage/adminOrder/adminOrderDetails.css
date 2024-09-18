@@ -1,0 +1,217 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* Main Section */
+main {
+    padding: 20px;
+}
+
+/* Order Header */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.order-status {
+    background-color: #3498db;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-dates p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.order-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Colors */
+.cancel-order {
+    background-color: #e74c3c; /* Red for cancel */
+}
+
+.ready-to-ship {
+    background-color: #f39c12; /* Orange for ready to ship */
+}
+
+.parcel-arrived {
+    background-color: #2ecc71; /* Green for parcel arrived */
+}
+
+/* Button Hover Effects */
+.cancel-order:hover {
+    background-color: #c0392b; /* Darker red */
+}
+
+.ready-to-ship:hover {
+    background-color: #e67e22; /* Darker orange */
+}
+
+.parcel-arrived:hover {
+    background-color: #27ae60; /* Darker green */
+}
+
+/* Disabled Button Style */
+button[disabled] {
+    background-color: grey; /* Grey for disabled state */
+    cursor: not-allowed;
+}
+
+/* Order Details Section */
+.order-details {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.order-info {
+    flex: 1;
+    min-width: 250px;
+}
+
+.order-info h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.order-info p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.order-items {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detailsTitle h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.order-items table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.order-items table th,
+.order-items table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+}
+
+.order-items table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+}
+
+.order-items table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.order-items table td:last-child {
+    font-weight: bold;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .order-header,
+    .order-details {
+        flex-direction: column;
+    }
+
+    .order-actions {
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .order-info {
+        width: 100%;
+    }
+
+    .order-items {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.back-button {
+    margin-top: 20px;
+}
+
+.back-button .button {
+    padding: 10px 15px;
+    background-color: #e7af14;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.back-button .button:hover {
+    background-color: #333;
+}
+
