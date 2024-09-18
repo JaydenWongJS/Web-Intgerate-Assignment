@@ -239,7 +239,7 @@ if (is_post()) {
 
             // If all items are available, proceed to the checkout page
             // Commented out for debugging
-            redirect('../checkout.php');
+            redirect('../checkout/checkout.php');
 
 
             break;

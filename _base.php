@@ -209,7 +209,7 @@ function html_radio_payment($key, $options)
 
         // Output the label and input with the appropriate classes and attributes
         echo "<input class='e-wallet-radio' type='radio' name='" . htmlspecialchars($key) . "' id='$value' value='$value' $checked>";
-        echo "<label class='e-wallet-pic $activeClass' for='$value'><img class='wallet-pic' src='image/$value.png' alt='$label'></label>";
+        echo "<label class='e-wallet-pic $activeClass' for='$value'><img class='wallet-pic' src='/image/$value.png' alt='$label'></label>";
     }
 }
 

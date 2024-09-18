@@ -6,7 +6,7 @@
               <ul class="nav_url">
                   <li><a class="link" href="/index.php"><i class="fas fa-home"></i> Home</a></li>
                   <li><a class="link" href="/aboutus.php"><i class="fas fa-info-circle"></i> About</a></li>
-                  <li><a class="link" href="/shop.php"><i class="fas fa-dollar-sign"></i> Shop</a></li>
+                  <li><a class="link" href="/shop_product/shop.php"><i class="fas fa-dollar-sign"></i> Shop</a></li>
                   <li><a class="link" href="/contactus.php"><i class="fas fa-envelope"></i> Contact</a></li>
                   <?php if ($_user?->role == "member"): ?>
                       <li>
@@ -45,7 +45,7 @@
                               <a class="link" href="/adminPage/adminDashboard.php"><i class='fas fa-tachometer-alt'></i>Admin Dashboard</a>
                           <?php else: ?>
                               <a class="link" href="/profile/profile.php"><i class='fas fa-user-cog'></i> Profile</a>
-                              <a class="link" href="/myOrder.php">  <i class="fas fa-receipt icon"></i>Orders  <span class="notification-badge"><?=countCurrentOrder($_user->member_id)?></span></a>
+                              <a class="link" href="/order/myOrder.php">  <i class="fas fa-receipt icon"></i>Orders  <span class="notification-badge"><?=countCurrentOrder($_user->member_id)?></span></a>
                           <?php endif; ?>
                           
                           <a href="/log_out.php" class="logout"><i class='fas fa-sign-out-alt'></i> Logout</a>

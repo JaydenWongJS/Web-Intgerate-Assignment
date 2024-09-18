@@ -77,7 +77,7 @@ ksort($cartItems);
         <tbody>
             <?php
             if (!$cartItems) {
-                echo "<tr><td colspan='8'>Cart is empty <a href='../shop.php'>Go To Shop</a></td></tr>";
+                echo "<tr><td colspan='8'>Cart is empty <a href='../shop_product/shop.php'>Go To Shop</a></td></tr>";
                 exit;
             }
             ?>

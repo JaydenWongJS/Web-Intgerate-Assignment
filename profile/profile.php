@@ -216,7 +216,7 @@ if (array_key_exists($gender, $_genders)) {
         </div>
 
         <div class="qr_box_bottom">
-            <a href="../myOrder.php" class="beautiful_box">My Orders</a>
+            <a href="../order/myOrder.php" class="beautiful_box">My Orders</a>
         </div>
 
         <div class="log_out" style="text-align: center;">
