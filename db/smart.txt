@@ -1,0 +1,279 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Aug 07, 2024 at 10:54 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `smart`
+--
+CREATE DATABASE IF NOT EXISTS `smart` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `smart`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attributes`
+--
+
+CREATE TABLE `attributes` (
+  `attributes_id` varchar(10) NOT NULL,
+  `attributes_type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `attributes`
+--
+
+INSERT INTO `attributes` (`attributes_id`, `attributes_type`) VALUES
+('at01', 'Inch'),
+('at02', 'Color'),
+('at03', 'Earphone Type');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `category_id` varchar(10) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`category_id`, `name`) VALUES
+('c01', 'Laptop'),
+('c02', 'Phone'),
+('c03', 'earphone');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `member`
+--
+
+CREATE TABLE `member` (
+  `member_id` varchar(20) NOT NULL,
+  `firstname` varchar(30) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `birthdate` date NOT NULL,
+  `email` varchar(40) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(10) NOT NULL,
+  `address1` varchar(30) NOT NULL,
+  `address2` varchar(30) NOT NULL,
+  `city` varchar(15) NOT NULL,
+  `state` varchar(15) NOT NULL,
+  `postcode` varchar(10) NOT NULL,
+  `email_activation` int(1) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `member_points` decimal(11,0) NOT NULL,
+  `activation_token` varchar(64) NOT NULL,
+  `image` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `member`
+--
+
+INSERT INTO `member` (`member_id`, `firstname`, `lastname`, `birthdate`, `email`, `gender`, `phone`, `password`, `role`, `address1`, `address2`, `city`, `state`, `postcode`, `email_activation`, `status`, `member_points`, `activation_token`, `image`) VALUES
+('M01', 'CHRISTINE', 'QIAN LE MINIONS', '2004-05-10', 'christinechew0510@gmail.com', 'F', '0162379231', '$2y$10$TIrpCd1crLiyU7Zg0oaKL.D0MYrl8Y3RWxi8cwT5W8wNIqzIdcsFG', 'member', 'NO 6 JALAN BANDAR PUTERI', 'BANDAR PUTERI PUCHONG', 'PUCHONG', 'SELANGOR', '47100', 1, 'active', 0, '', 'minions.gif'),
+('M02', 'YONG', 'CHENG FUNG', '2024-07-28', 'yfung2574@gmail.com', 'M', '0128082165', '$2y$10$/nh484W40nku5wqwJhPAWuwvufxhrWsZRo8II5hgp8GGsL5ZjRM3K', 'admin', 'B-02-13', 'SRI CASSIA APT', 'PUCHONG', 'SELANGOR', '47100', 1, 'active', 0, '', ' '),
+('M03', 'ALAN', 'WONG', '1990-03-15', 'alanwong@mail.com', 'M', '0123456789', '$2y$10$3hJLMK90NolIt3xYKPZ/OuSmgqztel7Y3O8exFWqkP5S6H3IGgLmO', 'member', '12 JALAN SRI PETALING', 'TAMAN SRI PETALING', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '57000', 1, 'Pending', 100, '', 'alan.gif'),
+('M04', 'SARA', 'LEE', '1985-09-12', 'saralee@mail.com', 'F', '0139876543', '$2y$10$HjLMN90JkLPIt1XYKPZ/YuYwZr4u7fwQ8N3Z0qLZ5rMGQ/J8BpRnJ', 'member', '89 JALAN AMPANG', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '50450', 1, 'Suspended', 200, '', 'sara.jpg'),
+('M05', 'DAVID', 'NG', '1978-12-30', 'davidng@mail.com', 'M', '0112345678', '$2y$10$KlMNQ90lk1OIt2XYKPZ/OwuyfHzt6fwQ4N2C5qKy3pG8A5H2IRcD4', 'admin', '33 JALAN RAYA', '', 'GEORGE TOWN', 'PENANG', '10100', 1, 'Active', 50, '', 'david.png'),
+('M06', 'MICHELLE', 'TAN', '1995-06-22', 'michelle@mail.com', 'F', '0169876543', '$2y$10$TjLMN90JkLPIt5XYKPZ/QeZvQsrt1lwQ4N1N6cKy1rMG9J4IbQjK9', 'member', '5 JALAN GAYA', '', 'KOTA KINABALU', 'SABAH', '88000', 1, 'Pending', 150, '', 'michelle.gif'),
+('M07', 'VINCENT', 'GOH', '1992-11-05', 'vincentgoh@mail.com', 'M', '0147654321', '$2y$10$FjLMN90JkLPIt7XYKPZ/OzeRvPdr2lwQ4N8F6bLy2sJG7J8RbMnL2', 'member', '2 JALAN BUKIT BINTANG', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '55100', 1, 'Suspended', 75, '', 'vincent.jpg'),
+('M08', 'JASON', 'LIM', '1993-04-08', 'jasonlim@mail.com', 'M', '0168888888', '$2y$10$abc123def456ghijklmnopqrs', 'member', '10 JALAN LOKE YEW', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '55200', 1, 'Active', 120, '', 'jason.png'),
+('M09', 'AMANDA', 'ONG', '1987-11-02', 'amandaong@mail.com', 'F', '0129999999', '$2y$10$123abc456defghijklmnopqr', 'member', '25 JALAN TAN SRI', '', 'JOHOR BAHRU', 'JOHOR', '80000', 1, 'Pending', 80, '', 'amanda.jpg'),
+('M10', 'RYAN', 'CHEW', '1999-05-15', 'ryanchew@mail.com', 'M', '0197777777', '$2y$10$abcdef123456ghijklmnopqr', 'admin', '8 JALAN TUN RAZAK', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '50300', 1, 'Active', 60, '', 'ryan.gif'),
+('M11', 'EMILY', 'CHONG', '2000-02-25', 'emilychong@mail.com', 'F', '0145555555', '$2y$10$xyz123abc456defghijklmnop', 'member', '99 JALAN KUCHAI LAMA', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '58200', 1, 'Suspended', 30, '', 'emily.gif'),
+('M12', 'BENJAMIN', 'LEE', '1985-07-17', 'benlee@mail.com', 'M', '0174444444', '$2y$10$ghijklmnopqrstuvwxy123456', 'member', '15 JALAN KEPONG', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '52100', 1, 'Pending', 95, '', 'benjamin.png'),
+('M13', 'NATALIE', 'GOH', '1996-12-03', 'nataliegoh@mail.com', 'F', '0183333333', '$2y$10$mnopqrstuvwxy123456abcde', 'member', '22 JALAN DAMANSARA', '', 'PETALING JAYA', 'SELANGOR', '47400', 1, 'Active', 110, '', 'natalie.jpg'),
+('M14', 'ISAAC', 'NG', '1991-08-29', 'isaacng@mail.com', 'M', '0132222222', '$2y$10$456defghijklmnopqrstuvwx', 'admin', '34 JALAN SULTAN ISMAIL', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '50250', 1, 'Suspended', 70, '', 'isaac.jpg'),
+('M15', 'HANNAH', 'YAP', '1998-03-12', 'hannahyap@mail.com', 'F', '0121111111', '$2y$10$mnopqrstuvwx123456abcdef', 'member', '11 JALAN SETIAWANGSA', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '54200', 1, 'Pending', 40, '', 'hannah.png'),
+('M16', 'ETHAN', 'CHIA', '1989-09-14', 'ethanchia@mail.com', 'M', '0199990000', '$2y$10$abcdefgh123456ijklmnopqr', 'member', '17 JALAN TUNKU ABDUL RAHMAN', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '50100', 1, 'Active', 130, '', 'ethan.gif'),
+('M17', 'SOFIA', 'TAN', '1994-05-22', 'sofiatan@mail.com', 'F', '0176666666', '$2y$10$mnopqrstuvwx123456abcdef', 'member', '33 JALAN BUKIT BINTANG', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '55100', 1, 'Suspended', 50, '', 'sofia.jpg'),
+('M18', 'DANIEL', 'WONG', '1980-01-07', 'danielwong@mail.com', 'M', '0185555555', '$2y$10$123456abcdefghijklmnopqr', 'member', '44 JALAN IMBI', '', 'KUALA LUMPUR', 'WILAYAH PERSEKUTUAN', '55100', 1, 'Pending', 65, '', 'daniel.png'),
+('M19', 'VICTORIA', 'LIM', '1997-11-30', 'victorialim@mail.com', 'F', '0163333333', '$2y$10$mnopqrstuvwxy123456abcdef', 'member', '56 JALAN KINABALU', '', 'KOTA KINABALU', 'SABAH', '88100', 1, 'Active', 100, '', 'victoria.jpg'),
+('M20', 'LEO', 'CHEW', '1992-10-19', 'leochew@mail.com', 'M', '0117777777', '$2y$10$mnopqrstuvwx123456abcdefg', 'member', '77 JALAN PANTAI', '', 'KOTA KINABALU', 'SABAH', '88100', 1, 'Suspended', 140, '', 'leo.gif'),
+('M21', 'CHLOE', 'ONG', '1988-04-03', 'chloeong@mail.com', 'F', '0125555555', '$2y$10$qrstuvwx123456abcdefghi', 'member', '88 JALAN SARAWAK', '', 'KUCHING', 'SARAWAK', '93100', 1, 'Pending', 90, '', 'chloe.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `options`
+--
+
+CREATE TABLE `options` (
+  `option_id` varchar(50) NOT NULL,
+  `attributes_id` varchar(50) DEFAULT NULL,
+  `option_value` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `options`
+--
+
+INSERT INTO `options` (`option_id`, `attributes_id`, `option_value`) VALUES
+('o01', 'at01', '16'),
+('o02', 'at01', '17'),
+('o03', 'at01', '18'),
+('o04', 'at01', '19'),
+('o05', 'at02', 'Blue'),
+('o06', 'at02', 'green'),
+('o07', 'at02', 'white'),
+('o08', 'at03', 'Buds'),
+('o09', 'at03', 'Pods');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `product_id` varchar(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `category_id` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `name`, `description`, `category_id`) VALUES
+('PR01', 'Acer nitro', 'test', 'c01'),
+('PR02', 'Msi Cyborgr 123', 'test', 'c02'),
+('PR03', 'Apple EarBud Fourth Genration', 'test 123', 'c03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_attributes`
+--
+
+CREATE TABLE `product_attributes` (
+  `product_attribute_id` int(11) NOT NULL,
+  `product_id` varchar(10) DEFAULT NULL,
+  `attributes_id` varchar(10) DEFAULT NULL,
+  `option_id` varchar(10) DEFAULT NULL,
+  `price` decimal(50,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_attributes`
+--
+
+INSERT INTO `product_attributes` (`product_attribute_id`, `product_id`, `attributes_id`, `option_id`, `price`) VALUES
+(1, 'PR01', 'at01', 'o01', 120000.00),
+(2, 'PR01', 'at01', 'o02', 10000.00),
+(3, 'PR02', 'at02', 'o05', 10000.00),
+(4, 'PR02', 'at02', 'o06', 10.00),
+(5, 'PR02', 'at02', 'o07', 20.00),
+(8, 'PR01', 'at01', 'o03', 1900.00),
+(9, 'PR03', 'at03', 'o09', 5000.00);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `attributes`
+--
+ALTER TABLE `attributes`
+  ADD PRIMARY KEY (`attributes_id`);
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `member`
+--
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`member_id`);
+
+--
+-- Indexes for table `options`
+--
+ALTER TABLE `options`
+  ADD PRIMARY KEY (`option_id`),
+  ADD KEY `attribute_id` (`attributes_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `product_attributes`
+--
+ALTER TABLE `product_attributes`
+  ADD PRIMARY KEY (`product_attribute_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `attributes_id` (`attributes_id`),
+  ADD KEY `option_id` (`option_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `product_attributes`
+--
+ALTER TABLE `product_attributes`
+  MODIFY `product_attribute_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `options`
+--
+ALTER TABLE `options`
+  ADD CONSTRAINT `options_ibfk_1` FOREIGN KEY (`attributes_id`) REFERENCES `attributes` (`attributes_id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
+
+--
+-- Constraints for table `product_attributes`
+--
+ALTER TABLE `product_attributes`
+  ADD CONSTRAINT `product_attributes_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+  ADD CONSTRAINT `product_attributes_ibfk_2` FOREIGN KEY (`attributes_id`) REFERENCES `attributes` (`attributes_id`),
+  ADD CONSTRAINT `product_attributes_ibfk_3` FOREIGN KEY (`option_id`) REFERENCES `options` (`option_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,5 +1,10 @@
 <?php $title="About Us" ?>
-<?php include('_header.php') ?>
+<?php
+require_once('_base.php');
+ include('_header.php') ;
+ include('nav_bar.php') ;
+
+?>
 
     <div class="banner aboutus_banner">
         <img id="background-video" src="image/aboutUs.png">

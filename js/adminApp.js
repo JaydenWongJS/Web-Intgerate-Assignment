@@ -1,47 +1,87 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  const manageDropdown = document.getElementById("management");
-  const dropdownMenu = document.getElementById("dropdownMenu");
+$(() => {
+    console.log("Document is ready");
 
-  manageDropdown.addEventListener("click", function(event) {
-      event.preventDefault(); // Prevent default action of the link
-      if (dropdownMenu.classList.contains("show")) {
-          dropdownMenu.classList.remove("show");
-          setTimeout(() => {
-              dropdownMenu.style.display = "none";
-          }, 500); // Delay to allow transition to complete before setting display to none
-      } else {
-          dropdownMenu.style.display = "block";
-          setTimeout(() => {
-              dropdownMenu.classList.add("show");
-          }, 10); // Small delay to ensure display is set to block before adding class
-      }
-  });
+    const $manageDropdown = $("#management");
+    const $dropdownMenu = $("#dropdownMenu");
 
-  // Show dropdown if current page is within the management section
-  const managementPages = ['Admin Order', 'Members', 'Reviews'];
-  if (managementPages.includes(currentPageTitle)) {
-      dropdownMenu.style.display = "block";
-      setTimeout(() => {
-          dropdownMenu.classList.add("show");
-      }, 10); // Small delay to ensure display is set to block before adding class
-  }
-});
+    // Toggle dropdown menu visibility
+    $manageDropdown.on("click", function (event) {
+        event.preventDefault();
+        console.log("Dropdown clicked");
+        if ($dropdownMenu.hasClass("show")) {
+            console.log("Dropdown is currently shown");
+            $dropdownMenu.removeClass("show");
+            setTimeout(() => $dropdownMenu.hide(), 500);
+        } else {
+            console.log("Dropdown is currently hidden");
+            $dropdownMenu.show();
+            setTimeout(() => $dropdownMenu.addClass("show"), 10);
+        }
+    });
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  const circle = document.querySelector('.circle');
-  const positivePercentage = circle.getAttribute('data-positive');
-  const neutralPercentage = circle.getAttribute('data-neutral');
-  const negativePercentage = circle.getAttribute('data-negative');
-
-  circle.style.background = `conic-gradient(
-      #4caf50 0% ${positivePercentage}%, 
-      #ddd ${positivePercentage}% ${parseFloat(positivePercentage) + parseFloat(neutralPercentage)}%, 
-      #f44336 ${parseFloat(positivePercentage) + parseFloat(neutralPercentage)}% 100%
-  )`;
-});
-
-    function submitSortingSize() {
-        document.getElementById('sortingForm').submit();
+    // Show dropdown menu if on a management page
+    const managementPages = ['Admin Order', 'Members', 'Reviews', 'Products',];
+    if (managementPages.includes(currentPageTitle)) {
+        console.log("Current page is in management section");
+        $dropdownMenu.show();
+        setTimeout(() => $dropdownMenu.addClass("show"), 10);
     }
 
+    // Circle chart percentage data
+    const $circle = $(".circle");
+    const positivePercentage = $circle.data("positive") || 0;
+    const neutralPercentage = $circle.data("neutral") || 0;
+    const negativePercentage = $circle.data("negative") || 0;
+
+    console.log(`Positive: ${positivePercentage}, Neutral: ${neutralPercentage}, Negative: ${negativePercentage}`);
+
+    $circle.css("background", `conic-gradient(
+        #4caf50 0% ${positivePercentage}%, 
+        #ddd ${positivePercentage}% ${parseFloat(positivePercentage) + parseFloat(neutralPercentage)}%, 
+        #f44336 ${parseFloat(positivePercentage) + parseFloat(neutralPercentage)}% 100%
+    )`);
+
+    /*Ron*/
+    // Initiate GET request
+    $('[data-get]').on('click', e => {
+        e.preventDefault();
+        const url = e.target.dataset.get;
+        location = url || location;
+    });
+
+    // Initiate POST request
+    $('[data-post]').on('click', e => {
+        e.preventDefault();
+        const url = e.target.dataset.post;
+        const f = $('<form>').appendTo(document.body)[0];
+        f.method = 'POST';
+        f.action = url || location;
+        f.submit();
+    });
+
+    //Confirmation Message
+    // Confirmation Message
+    $('[data-confirm]').on('click', function (e) {
+        const confirmMessage = $(this).attr('data-confirm') || 'Are you sure?';
+
+        // Show confirmation dialog
+        if (!confirm(confirmMessage) == true) {
+            e.preventDefault();  // Prevent default action
+            e.stopPropagation(); // Prevent event bubbling
+            return false;        // Ensure the action does not proceed
+        }
+
+
+    });
+
+
+    // Convert text to uppercase
+    $('[data-upper]').on('input', function (e) {
+        const a = e.target.selectionStart;
+        const b = e.target.selectionEnd;
+        e.target.value = e.target.value.toUpperCase();
+        e.target.setSelectionRange(a, b);
+    });
+
+
+});

@@ -132,12 +132,15 @@ a{
   height: 1000px;
 }
 
-.title {
+.title  {
   font-size: 25px;
   width: 100%;
   background-color: white;
-  padding: 20px 30px;
-  margin: 15px 0px 3px 0px;
+  padding: 10px 30px;
+  margin: 5px 0px 3px 0px;
+}
+.title  h2{
+  text-align: left;
 }
 
 .dashboard-header {
@@ -165,8 +168,8 @@ a{
 
 .statistics_box {
   color: #f1f1f1;
-  font-size: 20px;
-  padding: 20px;
+  font-size: 16px;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -190,9 +193,79 @@ a{
 }
 
 .statistics_box:nth-child(4) {
-  background-color: #d45060;
+  background-color: #d0273a;
 }
 
+.statistics_box:nth-child(5) {
+  background-color: #ffbf0f;
+}
+
+.statistics_box:nth-child(6) {
+  background-color: #50d4c9;
+}
+
+/* Container for the customer table */
+.customer-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Title styling */
+.customer-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+}
+
+/* Table styling */
+.customer-table {
+  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table headers */
+.customer-table-header {
+  background-color: #191919;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  border:none;
+}
+
+.customer-table-header-cell {
+  border:1px solid #ffffff;
+  padding: 12px;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+/* Table cells */
+.customer-table-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Row styling */
+.customer-table-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.customer-table-row:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Hover effect on rows */
+.customer-table-row:hover .customer-table-cell {
+  color: #333;
+}
 
 
 .icon_box {
@@ -238,7 +311,7 @@ a{
 
 .sum_percentage_box{
   margin:20px 0px;
-  height: 300px;
+  height: 250px;
   display: flex;
   justify-content: center;
  align-items: center;
@@ -250,7 +323,7 @@ a{
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
   width: 400px;
   text-align: center;
 }
@@ -305,10 +378,10 @@ a{
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 5px;
   width: 800px;
   text-align: center;
-  margin-top: 20px;
+
 }
 
 .review_card .card-header {
@@ -535,4 +608,743 @@ table.order-table td button.view-button:hover{
 .status{
   color:green;
   font-weight: bold;
+}
+
+
+
+/*Ron*/
+table, tr, td, th{
+  border:1px solid black;
+  border-collapse: collapse;
+  padding:5px 5px;
+}
+
+/*ADMIN - MEMBER PAGE*/
+.member_page_content_table table{
+  margin:auto;
+  width:90%;
+}
+
+.member_page_content_table table th{
+  text-align: center;
+ background-color: #000;
+ color:white;
+  text-decoration: none;
+}
+
+/*Search Filter*/
+.member_page_search_filter{
+  margin:10px 0px;
+}
+.member_page_search_filter form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width:100%;
+  margin:auto;
+  padding:15px 0px;
+  border-top:0.5px solid black;
+  border-bottom:0.5px solid black;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.member_page_search_filter .input-text{
+  padding:10px;
+  width:300px;
+  border: 3px solid black;
+  outline:none;
+  transition:0.5s;
+  margin:0 20px 0 0;
+  font-weight: 700;
+  font-size:16px;
+}
+
+.member_page_search_filter .input-text:focus{
+  background:rgb(221, 230, 238);
+  border-bottom:2px solid black;
+  border-top:2px solid black;
+}
+
+.member_page_search_filter .select-box{
+  padding:10px 20px;  ;
+  border:1px solid black;
+  border-radius:10px;
+  outline:none;
+  cursor:pointer;
+  transition:0.5s;
+  margin:0 20px 0 0;
+  width: 200px;
+  border:3px solid black;
+  background-color: #fff;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+
+.member_page_search_filter button[type=submit]{
+
+  border:3px solid black;
+  background-color: #fff;
+  border-radius:50%;
+  width: 40px;
+  height: 40px;
+  cursor:pointer;
+  transition: 0.3s;
+}
+
+.member_page_search_filter button[type=submit]:hover{
+  border:1px solid rgb(190, 190, 190);
+  background-color: #000;
+  color: #fff;
+  transition: 0.3s;
+}
+
+.order_customer_section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.order_customer_section h2{
+  margin:20px 0px 10px 0px;
+}
+
+
+/*Result*/
+.member_page_result_showing{
+  width: 90%;
+  margin:auto;
+  padding:10px 0;
+}
+
+.member_page_content_table table{
+  text-align: center;
+  text-transform: uppercase;
+
+}
+
+/*Content Table*/
+.member_page_content_table th a.sortable {
+  /* Default style for sortable headers */
+  text-decoration: none;
+  color:white;
+  padding: 8px 12px;
+  display: inline-block;
+  position: relative;
+
+}
+
+/* Style for ascending sorted column */
+th a.asc {
+  color:white;
+  font-weight: bold;
+}
+
+th a.asc::after {
+  content: "▲"; /* Up arrow for ascending */
+  position: absolute;
+  right: -20px;
+  font-size: 12px;
+  color:white;
+}
+
+/* Style for descending sorted column */
+th a.desc {
+  color:white;
+  font-weight: bold;
+}
+
+th a.desc::after {
+  content: "▼"; /* Down arrow for descending */
+  position: absolute;
+  right: -20px;
+  font-size: 12px;
+  color:white;
+}
+
+/* Style for unsorted columns with default arrow */
+th a.sortable::after {
+  position: absolute;
+  right: -20px;
+  font-size: 12px;
+  color:white;
+}
+
+/* Hover effect for all sortable headers */
+th a.sortable:hover {
+  color: #7b550e;
+  text-decoration: underline;
+}
+
+/*point style*/
+.member_page_point{
+  text-align: right;
+  font-style: italic;
+}
+
+/*status style*/
+#member_update_btn{
+  color:white;
+  background-color: rgb(19, 222, 8);
+}
+.member_deactivate_btn{
+  color:white;
+background-color: rgb(147, 147, 3);
+}
+.member_activate_btn{
+  color:white;
+  background-color: green;
+  }
+  .member_suspend_btn{
+    color:white;
+    background-color: red;
+    }
+.member_status_pending{
+  color: rgb(147, 147, 3);
+}
+.member_status_suspended {
+  color: red;
+}
+.member_status_active {
+  color: rgb(11, 114, 140);
+}
+
+/*action button style*/
+.member_page_button{
+  text-align: center;
+}
+
+.member_page_button button.detail_button{
+  text-align:center;
+  color:black;
+  background:rgb(169, 198, 233);
+  border:1px solid transparent;
+  padding:5px 20px;
+  cursor:pointer;
+  border-radius:5px;
+  transition:.3s;
+}
+
+.member_page_button button.detail_button:hover{
+  background:rgb(169, 198, 233);
+  border:1px solid blue;
+  border-radius:3px;
+  transition:.3s;
+}
+
+/*Paginatopn*/
+/* Style the pager container */
+.pager {
+  display: flex;
+  justify-content: center; /* Center the pagination links */
+  align-items: center;
+  padding: 10px 0;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Style the pager links */
+.pager a {
+  color: #4c4c4c; /* Default link color */
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  margin: 0 5px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Change background and text color on hover */
+.pager a:hover {
+  background-color: #79c8ef;
+  color: white;
+}
+
+/* Style the active page link */
+.pager a.active {
+  background-color: #656566;
+  color: white;
+  cursor: default;
+  pointer-events: none; /* Disable clicking on the active link */
+}
+
+/* Disable clicking on the first and last links when at the start/end */
+.pager a[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Ensure consistent sizing */
+.pager a:first-child {
+  margin-left: 0;
+}
+
+.pager a:last-child {
+  margin-right: 0;
+}
+
+
+/*======================================================*/
+/*ADMIN - DETAIL PAGE*/
+/* Container for the details section */
+.details_container {
+  width: 80%;
+  margin:0px auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+/* Profile Picture Section */
+.profile_picture {
+  margin: 50px auto;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  width: 200px; /* Set a fixed width */
+  height: 200px; /* Set a fixed height to maintain the circle */
+  padding:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.profile_picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the circle without being distorted */
+  border-radius: 50%;
+}
+
+/* Member Details Section */
+.member_details {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+/* Styling for each information block */
+.info_block,
+.address_block {
+  padding-bottom: 10px;
+}
+
+/* Styling for each information block */
+.info_block p,
+.address_block p { 
+  padding: 15px 0px; /* Add margin of 10px on top and bottom, and 0px on left and right */
+  font-size: 1.1rem;
+  color: #333;
+}
+
+
+
+/* Status and Points Section */
+.status_points {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.status_section, .points_section {
+  flex: 1;
+}
+
+.status_section p, .points_section p {
+  font-size: 16px;
+  margin: 0;
+  color: #555;
+}
+
+/* Status Color Classes */
+.member_status_pending {
+  color: orange;
+}
+
+.member_status_suspended {
+  color: red;
+}
+
+.member_status_active {
+  color: green;
+}
+
+/* Action Buttons */
+.action_buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.action_buttons button {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.action_buttons button i {
+  margin-right: 5px;
+}
+
+
+/*======================*/
+/* Flash Message ----------------------------------------------------------- */
+
+#info ,#empty_selection_info{
+  position: fixed;
+  color: #fff;
+  background: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px 20px;
+  left: 50%;
+  translate: -50% 0;
+  top: -70px;
+  opacity: 0;
+  z-index: 999;
+}
+
+#info:not(:empty) {
+  animation: fade 5s;
+}
+
+@keyframes fade {
+    0% { top: -100px; opacity: 0; } 
+   10% { top:  70px; opacity: 1; } 
+   90% { top:  70px; opacity: 1; } 
+  100% { top: -100px; opacity: 0; } 
+}
+
+/*--------------------- Soh new add -------------------- */
+.container{
+  margin-left: 15%;
+  padding: 3% 50px;
+}
+.divline{
+  border:solid black 1px;
+  margin-bottom: 35px;
+  margin-top: 15px;
+}
+
+textarea {
+  resize: vertical;
+}
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+input[type="date"],
+textarea,
+select {
+    width:95%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.column {
+    margin-top: 35px;
+    
+}
+
+.form-group{
+  padding-bottom: 10px;
+}
+
+.btn {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+  
+    background-color: #0056b3;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 4px;
+}
+.close-container {
+  text-align: right;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+#attributes-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.attribute-form {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.options-container{
+  width: 60%;
+}
+
+.remove-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-left: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #ff1a1a;
+}
+
+.remove-btn:focus {
+  outline: none;
+}
+
+.restore-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  
+  border-radius: 3px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.restore-btn:hover {
+  background-color: #0056b3;
+}
+
+.restore-btn:focus {
+  outline: none;
+}
+
+.successfulMsg{
+  margin: 0 0 20px 0;
+  color: green;
+}
+
+.errorMsg{
+  margin: 0 0 20px 0;
+  color: red;
+}
+
+/*--------------------*/
+/* Container */
+.member-management-container {
+  margin-left: 200px;;
+  padding: 20px;
+  width: 80%;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+/* Title */
+.page-title {
+  text-align:left;
+  margin-bottom: 20px;
+}
+
+.page-title h2 {
+  font-family: 'Arial', sans-serif;
+  color: #000;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.back-button button {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.back-button button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Member Details Table */
+.member-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.member-details-table th, .member-details-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  text-align: left;
+}
+
+.member-details-table th {
+  width: 25%;
+}
+
+
+.profile-picture img {
+
+  max-width: 200px;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+/* Form Action Buttons */
+.form-action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-action-buttons button {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form-action-buttons button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/*  admin profile  */
+.admin-profile-container {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: black;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-picture-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture-section img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-btn, .reset-btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.reset-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 20px;
 }

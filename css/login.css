@@ -26,40 +26,42 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.title{
+.title {
     text-align: center;
     width: 100%;
     position: relative;
 }
 
-.title small{
+.title small {
     color: #666666;
     text-align: center;
     font-weight: bold;
     letter-spacing: 1px;
     background-color: #ffffff;
 }
-.title h1::before{
-position: absolute;
-content: ' ';
-border-radius: 50%;
-padding: 20px;
-background-color: #0099ff;
-top:-50px;
-left:10px;
-}
 
-.title h1::after{
+.title h1::before {
     position: absolute;
     content: ' ';
     border-radius: 50%;
     padding: 20px;
     background-color: #0099ff;
-    top:-50px;
-    right:10px;
-    }
-.title h1{
-    font-size:40px;
+    top: -50px;
+    left: 10px;
+}
+
+.title h1::after {
+    position: absolute;
+    content: ' ';
+    border-radius: 50%;
+    padding: 20px;
+    background-color: #0099ff;
+    top: -50px;
+    right: 10px;
+}
+
+.title h1 {
+    font-size: 40px;
     text-shadow: 5px 5px 7px rgb(212, 212, 212);
     margin-top: 10px;
     font-weight: 700;
@@ -100,7 +102,8 @@ left:10px;
     color: grey;
     pointer-events: none;
     transition: all 0.2s ease;
-    font-size: 20px; /* Adjust the font size as needed */
+    font-size: 20px;
+    /* Adjust the font size as needed */
 }
 
 
@@ -109,13 +112,14 @@ left:10px;
     top: 20%;
     right: 10px;
     color: grey;
-   cursor: pointer;
+    cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 18px; /* Adjust the font size as needed */
+    font-size: 18px;
+    /* Adjust the font size as needed */
 }
 
 .input-text {
-    font-size:15px;
+    font-size: 15px;
     font-weight: bolder;
     width: 100%;
     padding: 10px 20px 10px 10px;
@@ -124,11 +128,12 @@ left:10px;
     outline: none;
 }
 
-.input-text:focus + label,
-.input-text:not(:placeholder-shown) + label {
+.input-text:focus+label,
+.input-text:not(:placeholder-shown)+label {
     top: 0;
     transform: translateY(-90%);
-    font-size: 16px; /* Adjust the font size as needed */
+    font-size: 16px;
+    /* Adjust the font size as needed */
 }
 
 .login-form button {
@@ -150,12 +155,14 @@ left:10px;
 }
 
 #submitButton:disabled {
-    background-color: #cccccc; /* Grey background color for disabled state */
-    color: #666666; /* Grey text color for disabled state */
+    background-color: #cccccc;
+    /* Grey background color for disabled state */
+    color: #666666;
+    /* Grey text color for disabled state */
     cursor: not-allowed;
 }
 
-.register{
+.register {
     margin-top: 20px;
     text-align: end;
     width: 100%;
@@ -173,19 +180,23 @@ left:10px;
     display: none;
     margin-bottom: 10px;
 }
+
 .invalid i {
-    margin:0px 8px;
+    margin: 0px 8px;
 }
 
 .overlay {
     display: none;
     position: fixed;
-    top: 0; bottom: 0; left: 0; right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
     justify-content: center;
     align-items: center;
-   
+
 }
 
 
@@ -199,13 +210,13 @@ left:10px;
 }
 
 @keyframes scaleIn {
-	0% {
-		transform: scale(0);
-	}
+    0% {
+        transform: scale(0);
+    }
 
-	100% {
-		transform: scale(1);
-	}
+    100% {
+        transform: scale(1);
+    }
 }
 
 .modal img {
@@ -243,27 +254,30 @@ left:10px;
     position: relative;
     width: 50%;
 }
+
 .left_forget img {
     position: absolute;
-    top:-70px;
+    top: -70px;
     height: auto;
 }
 
 
-.right_forget{
-    margin-top:50px;
+.right_forget {
+    margin-top: 50px;
 }
+
 .right_forget .input-text {
     background-color: transparent;
 }
 
 .black-button {
-    margin-top:10px;
+    margin-top: 10px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: black;
     border: 2px solid black;
-    background-color: white; /* Optional: to keep the background white */
+    background-color: white;
+    /* Optional: to keep the background white */
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -274,33 +288,40 @@ left:10px;
 
 .black-button:hover {
     color: black;
-    background-color: white; /* Optional: to keep the background white */
+    background-color: white;
+    /* Optional: to keep the background white */
 }
 
-.backLoginBox{
+.backLoginBox {
     width: 100%;
     margin-top: 20px;
     text-align: end;
 }
-.forgetPasswordBox{
-    text-align: end;
+
+.forgetPasswordBox {
+ display: flex;
+ justify-content: space-around;
+ align-items:end ;
     width: 100%;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
-.backToLogin,.forgetPassword{
-    color:grey;
+
+.backToLogin,
+.forgetPassword {
+    color: grey;
 
 }
 
-.body_forget_password{
-    flex-direction: column;
+.body_forget_password {
+    position: relative;
 }
-.titleForget{
+
+.titleForget {
     margin-bottom: 80px;
-    padding:10px;
+    padding: 10px;
     background-color: black;
-    color:#ffffff;
+    color: #ffffff;
     width: 100%;
 }
 
@@ -316,7 +337,7 @@ left:10px;
 
     top: -100px;
     opacity: 0;
-    z-index:999;
+    z-index: 999;
 }
 
 #info:not(:empty) {
@@ -324,8 +345,126 @@ left:10px;
 }
 
 @keyframes fade {
-      0% { top: -100px; opacity: 0; }
-     10% { top:  100px; opacity: 1; }
-     90% { top:  100px; opacity: 1; }
-    100% { top: -100px; opacity: 0; }
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+
+    10% {
+        top: 100px;
+        opacity: 1;
+    }
+
+    90% {
+        top: 100px;
+        opacity: 1;
+    }
+
+    100% {
+        top: -100px;
+        opacity: 0;
+    }
+}
+
+/*--- reset password --*/
+.reset_password_form{
+    font-weight: 700;
+    margin:30px auto;
+    display:flex ;
+    justify-content:center ;
+    align-items: center;
+    flex-direction: column;
+    width: 400px;
+    background-color:#000 ;
+    color:white;
+    border-radius: 20px;
+    padding:10px;
+}
+.reset_password_form h3{
+    font-size:20px;
+    margin:20px 0px;
+    padding:10px 20px;
+    margin-bottom: 30px;
+    border:2px solid white;
+    border-top-left-radius:10px ;
+    border-bottom-right-radius:10px ;
+}
+
+.reset_password_box{
+    padding: 10px;
+    width: 80%;
+    position: relative;
+    margin:10px 0px;
+    font-size: 18px;
+}
+
+.reset_password_box .password_input{
+    font-size: 18px;
+    margin-top:10px;
+    padding:5px 10px;
+    width:100%;
+    border:none;
+    outline:none;
+    background-color: transparent;
+    border-bottom:1px solid white;
+    color:white;
+}
+
+.reset_password_submit_box{
+    width: 100%;
+    text-align: end;
+}
+.reset_password_submit{
+    cursor: pointer;
+    text-align: end;
+    padding:10px 15px;
+    background-color: transparent;
+    border:3px solid white;
+    border-radius: 10px;
+    color:white;
+    margin-top:20px;
+    margin-bottom:15px ;
+    margin-right:20px;
+    transition: 0.3s ease;
+    font-weight: 700;
+    font-size:18px;
+}
+
+.reset_password_submit:hover{
+    background-color: white;
+    color:black;
+    border:3px solid white;
+}
+
+/* overlay loading */
+
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Ensure it appears above all content */
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

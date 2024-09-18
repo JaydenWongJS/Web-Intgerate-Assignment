@@ -9,7 +9,6 @@ body {
     height: 100vh;
     background-color: #f0f0f0;
     font-family: 'Crimson Text', sans-serif;
-
 }
 
 .register-form {
@@ -102,6 +101,35 @@ input{
     border:2px solid grey;
 }
 
+.file-upload {
+    margin-top:20px;
+    border: 4px dashed #007bff; /* Change border to dashed and use a primary color */
+    padding: 30px;
+    text-align: center;
+    width: 300px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa; /* Light background color */
+    border-radius: 10px; /* Rounded corners */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.file-upload:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+    border-color: #0056b3; /* Darker border color on hover */
+}
+
+.file-upload p {
+    font-size: 18px;
+    color: #6c757d; /* Muted text color */
+    margin-bottom: 15px; /* Slightly reduce space between text and file input */
+}
+
+.file-upload img {
+    margin-top: 15px; /* Add some space above the image */
+    border-radius: 10px; /* Rounded corners for the image */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -183,6 +211,7 @@ label {
 }
 
 #showPasswordButton{
+    cursor: pointer;
     padding:8px 12px;
     color:white;
     background-color: #0099ff;
@@ -312,4 +341,66 @@ label {
    10% { top:  100px; opacity: 1; }
    90% { top:  100px; opacity: 1; }
   100% { top: -100px; opacity: 0; }
+}
+
+/* overlay loading */
+
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Ensure it appears above all content */
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.email_verified_group{
+    padding:0px;
+    margin:0px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.verifyEmailButton{
+    padding:5px 10px;
+    background-color: white ;
+    border:3px solid black;
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.verifyEmailButton:hover{
+    background-color: black ;
+    border:3px solid white;
+    color: #FFF;
+}
+#otpInput{
+    padding:5px 10px;
+    border:3px solid #ccc;
+}
+
+#otpInput:hover{
+    border:3px solid black;
 }

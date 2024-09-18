@@ -1,39 +1,52 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require_once '_base.php';
+require 'lib/PHPMailer.php';
+require 'lib/SMTP.php';
 
-require 'PHPMAILER/src/Exception.php';
-require 'PHPMAILER/src/PHPMailer.php';
-require 'PHPMAILER/src/SMTP.php';
+if (isLoggedIn()) {
+    redirect('/');
+}
 
-function sendEmail($id, $firstname, $lastname, $email, $_subject, $_mesasage,$activation_link)
+function sendEmail($firstname, $lastname, $email, $_subject, $_message, $link, $type)
 {
     $name = $firstname . " " . $lastname;
     $customerEmail = $email;
     $subject = $_subject;
-    $message = $_mesasage;
+    $message = $_message;
 
     $mail = new PHPMailer(true);
 
-    try {
         //Server settings
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'yfung2574@gmail.com'; // Your Gmail address
-        $mail->Password = 'ruddssvrjcfwvewe'; // Your Gmail app password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+        $mail->Port = 587;
+        $mail->Username = 'infosmart609@gmail.com'; // Your Gmail address
+        $mail->Password = 'txeiqgbjoklqkflq'; // Your Gmail app password
+        $mail->CharSet = 'utf-8';
 
         //Recipients
-        $mail->setFrom('yfung2574@gmail.com', 'Smart'); // Your email address
-        $mail->addAddress($email); // Customer's email address
-        $mail->addReplyTo('yfung2574@gmail.com', 'Your Website'); // Your email address for replies
-
+        $mail->setFrom('infosmart609@gmail.com', 'Smart'); // Your email address
+        $mail->addAddress($customerEmail); // Customer's email address
+        $mail->addReplyTo('infosmart609@gmail.com', 'Smart'); // Your email address for replies
 
         $mail->isHTML(true);
-        $mail->Subject =$subject;
+        $mail->Subject = $subject;
+
+        // Customize email content based on type
+        $bodyContent = '
+        <div class="header">
+            Subject: ' . $subject . '
+        </div>
+        <div class="content">
+            <p><span>Name:</span> ' . $name . '</p>
+            <p><span>Email:</span> ' . $customerEmail . '</p>
+            <p style="margin-top:20px;"><span>Message:</span> ' . $message . '</p>
+        </div>
+        <div class="footer">
+            <a class="activate" href="' . $link . '">' . ($type == 'activation' ? 'Activate Account' : 'Reset Password') . '</a>
+        </div>';
 
         $mail->Body = '
         <html lang="en">
@@ -43,11 +56,10 @@ function sendEmail($id, $firstname, $lastname, $email, $_subject, $_mesasage,$ac
             <style>
                 body {
                     font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
                     background-color: #f5f5f5;
                 }
                 .container {
+                    padding:10px;
                     max-width: 600px;
                     margin: 20px auto;
                     background-color: #fff;
@@ -71,51 +83,36 @@ function sendEmail($id, $firstname, $lastname, $email, $_subject, $_mesasage,$ac
                 .content p span {
                     font-weight: bold;
                 }
-                    .footer{
-                        text-align:center;
-                     }
-                    .activate{
-                    padding:5px 13px;
-                    background-color:black;
-                    color:white;
-                    font-weight:700;
-
-                     }
+                .footer {
+                    text-align: center;
+                }
+                .activate {
+                    padding: 5px 13px;
+                    border:3px solid  black;
+                    background-color: white;
+                    color: black;
+                    font-weight: 700;
+                }
             </style>
         </head>
         <body>
             <div class="container">
-                <div class="header">
-                    Subject: ' . $subject . '
-                </div>
-                <div class="content">
-                    <p><span>Name:</span> ' . $name . '</p>
-                    <p><span>Email:</span> ' . $customerEmail . '</p>
-                    <p style="margin-top:20px;"><span>Message:</span> ' . $message . '</p>
-                </div>
-                <div class="footer">
-                       <a class="activate" href="'.$activation_link.'">Activate Account</a>
-                </div>
+                ' . $bodyContent . '
             </div>
         </body>
         </html>';
 
         if ($mail->send()) {
-            temp('info_activate', "Please go to your email to activate account");
-            redirect("register.php");
-            // echo '<script>
-            //         alert("Go to your email to activate your account");
-            //         window.location.href = "register.php";
-            //       </script>';
+            if ($type == 'activation') {
+                temp('emailActivated', "Please go to your email to activate account");
+                redirect("login.php");
+            } elseif ($type == 'reset') {
+                temp('info_reset', "Please go to your email to reset your password");
+                redirect("forgetPassword.php");
+            }
         } else {
             echo '<script>
                     window.location.href = "/";
                   </script>';
-        }        
-    } catch (Exception $e) {
-        echo "<script>
-        alert('Message could not be sent. Mailer Error: {$mail->ErrorInfo}');
-        document.location.href='index.php';
-        </script>";
-    }
+        }
 }

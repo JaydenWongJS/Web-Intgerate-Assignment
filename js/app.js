@@ -1,5 +1,6 @@
 
-$(document).ready(function() {
+$(() => {
+    console.log("app.js is intersecting")
     const slideContainer = $('.slide');
     const slideCount = $('.latest_product').length;
     const slideWidth = $('.latest_product').outerWidth(true);
@@ -11,449 +12,388 @@ $(document).ready(function() {
         slideContainer.css('transform', `translateX(${offset}px)`);
     }
 
-    $('.arrow_left').click(function() {
+    $('.arrow_left').click(function () {
         if (currentIndex > 0) {
             currentIndex--;
             updateSlidePosition();
         }
     });
 
-    $('.arrow_right').click(function() {
+    $('.arrow_right').click(function () {
         if (currentIndex < slideCount - slidesToShow) {
             currentIndex++;
             updateSlidePosition();
         }
     });
 
-    $("#filter").click(function() {
+    $("#filter").click(function () {
         $(".fixed_filter_bar").css({
-             display:'block',
+            display: 'block',
         });
         $("body").addClass("no-scroll");
         $(".overlay_filter").show();
     });
 
-    $("#closeFilter").click(function() {
+    $("#closeFilter").click(function () {
         $(".fixed_filter_bar").css({
-            display:'none',
+            display: 'none',
         });
         $("body").removeClass("no-scroll");
         $(".overlay_filter").hide();
     });
 
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
+    // Intersection Observer
     const observerOptions = {
         root: null,
         rootMargin: '0px',
         threshold: 0.3
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
+    const observer = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                $(entry.target).addClass('visible');
                 // Start animation for .mission elements
-                const missionItems = entry.target.querySelectorAll('.mission');
-                missionItems.forEach(item => {
-                    item.classList.add('roll_effect'); // Add the animation class
+                const missionItems = $(entry.target).find('.mission');
+                missionItems.each(function () {
+                    $(this).addClass('roll_effect'); // Add the animation class
                 });
                 observer.unobserve(entry.target); // Stop observing once it is visible
             }
         });
     }, observerOptions);
 
-    const missionItems = document.querySelectorAll('.come_in');
-    missionItems.forEach((item, index) => {
-        setTimeout(() => {
-            observer.observe(item);
-        }, index * 200); // Delay each item by 200ms
+    const missionItems = $('.come_in');
+    missionItems.each(function (index) {
+        setTimeout(function () {
+            observer.observe(this);
+        }.bind(this), index * 200); // Delay each item by 200ms
     });
 
-    const videoElement = document.getElementById("myVideo");
+    // Video fullscreen toggle
+    const videoElement = $("#myVideo");
 
-    videoElement.addEventListener("click", function () {
+    videoElement.on("click", function () {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
-            if (videoElement.requestFullscreen) {
-                videoElement.requestFullscreen();
-            } else if (videoElement.mozRequestFullScreen) { // Firefox
-                videoElement.mozRequestFullScreen();
-            } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                videoElement.webkitRequestFullscreen();
-            } else if (videoElement.msRequestFullscreen) { // IE/Edge
-                videoElement.msRequestFullscreen();
+            if (this.requestFullscreen) {
+                this.requestFullscreen();
+            } else if (this.mozRequestFullScreen) { // Firefox
+                this.mozRequestFullScreen();
+            } else if (this.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                this.webkitRequestFullscreen();
+            } else if (this.msRequestFullscreen) { // IE/Edge
+                this.msRequestFullscreen();
             }
         }
     });
 
-});
 
 
-function validateContactForm(event) {
-    console.log("Contact Form Is interceptiong, js");
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const subject = document.getElementById("subject").value.trim();
-    const message = document.getElementById("message").value.trim();
-    const namePattern = /^[A-Za-z\s]+$/;
-    const errors = [];
+    //nav bar 
+    $(window).on('scroll', function () {
+        var navBar = $('.nav_bar');
+        var navLinks = $('.nav_url .link');
 
-    if (!name) {
-        errors.push("Name is empty!");
-    } else if (!name.match(namePattern)) {
-        errors.push("Please enter only character for Name!");
-    }
-
-    if (!email) {
-        errors.push("Email is empty!");
-    } else if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-        errors.push("Please enter a valid email format!");
-    }
-
-    if (!subject) {
-        errors.push("Subject is empty!");
-    }
-
-    if (!message) {
-        errors.push("Message is empty!");
-    }
-
-    if (errors.length > 0) {
-        alert("Errors:\n" + errors.join("\n"));
-        return false; // Prevent form submission
-    }
-
-    return true; // Allow form submission
-}
-
-
-
-$(document).ready(function () {
-    $('#contact_form').on('submit', function (event) {
-
-        const noError = validateContactForm(); // Validate the form
-
-        if (noError) {
-            // Show loading spinner and overlay if there are no errors
-            $('#loadingSpinner').show();
-            $('.overlay_all').show();
-
-            // Disable the submit button to prevent multiple clicks
-            $('#sendButton').prop('disabled', true);
-
-            // Proceed with form submission
-            $('#contact_form').submit(); // Submit the form programmatically
-        } else {
-            event.preventDefault(); // Prevent default form submission
-            // Handle errors as needed
-            console.log("Form has errors, not showing loading spinner.");
-        }
-    });
-
-
-
-    window.addEventListener('scroll', function () {
-        var navBar = document.querySelector('.nav_bar');
-        var navLinks = document.querySelectorAll('.nav_url .link');
-
-        if (window.scrollY >= 70) {
-            navBar.classList.add('scrolled');
+        if ($(window).scrollTop() >= 70) {
+            navBar.addClass('scrolled');
             // Change text color to white for links
-            navLinks.forEach(function (link) {
-                link.style.color = 'white';
-            });
+            navLinks.css('color', 'white');
         } else {
-            navBar.classList.remove('scrolled');
+            navBar.removeClass('scrolled');
             // Revert text color to its original state
-            navLinks.forEach(function (link) {
-                link.style.color = '';
-            });
+            navLinks.css('color', '');
         }
     });
 
-    //back button
-    document.querySelector('.goBack').addEventListener('click', function(event) {
+    // back button
+    $('.goBack').on('click', function (event) {
         event.preventDefault();
         history.back();
     });
 
-    //payment
-    const radioButtons = document.querySelectorAll('.e-wallet-radio');
-    const labels = document.querySelectorAll('.e-wallet-pic');
-    const eWalletInfo = document.querySelector('.input_e_wallet_info');
-    const bankInfo = document.querySelector('.input_bank_info');
-    const paymentMethodName = document.getElementById('payment_method_name');
-    const fieldsetPayment = document.querySelector('.fieldset_payment');
 
-    fieldsetPayment.style.display = 'none';
+ const radioButtons = $('input[name="paymentMethod"]');
+    const labels = $('label');
+    const fieldsetPayment = $('.fieldset_payment');
+    const paymentMethodName = $('#payment_method_name');
+    const eWalletInfo = $('#eWalletFields');  // Assuming you have an ID for E-wallet fields
+    const bankInfo = $('#bankFields');  // Assuming you have an ID for bank fields
 
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', () => {
-            labels.forEach(label => label.classList.remove('active'));
-            const selectedLabel = document.querySelector(`label[for=${radio.id}]`);
-            selectedLabel.classList.add('active');
+    // Initial state (hide both fields until a selection is made)
+    eWalletInfo.hide();
+    bankInfo.hide();
 
-            fieldsetPayment.style.display = 'block';
+    // Listen for changes on radio buttons
+    radioButtons.on('change', function() {
+        // Remove active class from all labels, then add to selected label
+        labels.removeClass('active');
+        const selectedLabel = $(`label[for=${$(this).attr('id')}]`);
+        selectedLabel.addClass('active');
 
-            // Update the legend with the selected payment method name
-            switch (radio.value) {
-                case 'tng':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Touch \'n Go</span>';
-                    eWalletInfo.style.display = 'block';
-                    bankInfo.style.display = 'none';
-                    break;
-                case 'grab':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Grab</span>';
-                    eWalletInfo.style.display = 'block';
-                    bankInfo.style.display = 'none';
-                    break;
-                case 'boost':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Boost</span>';
-                    eWalletInfo.style.display = 'block';
-                    bankInfo.style.display = 'none';
-                    break;
-                case 'maybank':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Maybank</span>';
-                    eWalletInfo.style.display = 'none';
-                    bankInfo.style.display = 'block';
-                    break;
-                case 'publicBank':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Public Bank</span>';
-                    eWalletInfo.style.display = 'none';
-                    bankInfo.style.display = 'block';
-                    break;
-                case 'hongLeongBank':
-                    paymentMethodName.innerHTML = 'Selected Payment Method : <span class="type">Hong Leong Bank</span>';
-                    eWalletInfo.style.display = 'none';
-                    bankInfo.style.display = 'block';
-                    break;
-                default:
-                    paymentMethodName.innerHTML = '';
-                    eWalletInfo.style.display = 'none';
-                    bankInfo.style.display = 'none';
-            }
-        });
+        // Show the fieldset (if hidden) after a selection is made
+        fieldsetPayment.show();
+
+        // Update the legend and show the appropriate fields
+        switch ($(this).val()) {
+            case 'tng':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Touch \'n Go</span>');
+                eWalletInfo.show();
+                bankInfo.hide();
+                break;
+            case 'grab':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Grab</span>');
+                eWalletInfo.show();
+                bankInfo.hide();
+                break;
+            case 'boost':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Boost</span>');
+                eWalletInfo.show();
+                bankInfo.hide();
+                break;
+            case 'maybank':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Maybank</span>');
+                eWalletInfo.hide();
+                bankInfo.show();
+                break;
+            case 'publicBank':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Public Bank</span>');
+                eWalletInfo.hide();
+                bankInfo.show();
+                break;
+            case 'hongLeongBank':
+                paymentMethodName.html('Selected Payment Method: <span class="type">Hong Leong Bank</span>');
+                eWalletInfo.hide();
+                bankInfo.show();
+                break;
+            default:
+                paymentMethodName.html('');
+                eWalletInfo.hide();
+                bankInfo.hide();
+        }
+    });
+
+    // Check for preselected payment method (if page is loaded with a value pre-selected)
+    const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+    if (selectedMethod) {
+        radioButtons.trigger('change');  // Trigger change to show fields for pre-selected option
+    }
+    var initialSubtotal = parseFloat($('#subtotal').text().replace('RM ', '').replace(',', ''));
+
+    // Listen for change events on the voucher select element
+    $('#voucher_points_used').change(function() {
+        // Get the selected voucher value
+        var selectedOptionText = $(this).find('option:selected').text();
+        var discountValue = selectedOptionText.match(/\(RM(\d+)\)/);
+        
+        // Default discount to 0 if no valid voucher is selected
+        var discount = discountValue ? parseFloat(discountValue[1]) : 0;
+
+        // Calculate new subtotal
+        var newSubtotal = initialSubtotal - discount;
+        
+        // Update the subtotal element's text
+        $('#subtotal').text('RM ' + newSubtotal.toFixed(2));
+
+        // Change text color based on whether a valid voucher is selected
+        if (discount > 0) {
+            $('#subtotal').css("color", "red");
+        } else {
+            $('#subtotal').css("color", "black"); // Reset to black if no voucher is selected
+        }
+    });
+
+    //product filter 
+    $("#filter").click(function () {
+        $("#filterPanel").show();
+        $("#closeFilter").show();
+        $("#filter").hide();
+    });
+
+    $("#closeFilter").click(function () {
+        $("#filterPanel").hide();
+        $("#closeFilter").hide();
+        $("#filter").show();
     });
 
 
+// Update personal details
+$("#update_personal_info").click(function () {
+    $("#personal_info").hide();
+    $("#update_personal_info").hide();
+    $("#personal_info_input_form").show();
 });
 
-//personal info
-const updateButton = document.getElementById("update_personal_info");
-
-function changePersonalDetails() {
-    console.log("Changing Display Details Become Form Input")
-    const personalInfo = document.getElementById("personal_info");
-    const personalInfoInputForm = document.getElementById("personal_info_input_form");
-
-    personalInfo.style.display = "none";
-    updateButton.style.display = "none";
-    personalInfoInputForm.style.display = "block";
-
-}
-
-const cancelButton = document.getElementById("cancel");
-cancelButton.addEventListener("click", function () {
-    const personalInfo = document.getElementById("personal_info");
-    const personalInfoInputForm = document.getElementById("personal_info_input_form");
-    const updateButton = document.getElementById("update_personal_info");
-
-    personalInfo.style.display = "block";
-    updateButton.style.display = "block";
-    personalInfoInputForm.style.display = "none";
+$("#cancel").click(function () {
+    $("#personal_info").show();
+    $("#update_personal_info").show();
+    $("#personal_info_input_form").hide();
 });
 
-//address info
-const updateAddressButton = document.getElementById("update_address_info");
-function changeAddressDetails() {
-    console.log("Changing Display Adresss Details Become Form Input")
-    const addressInfo = document.getElementById("address_info");
-    const addressInfoInputForm = document.getElementById("address_info_input_form");
+// Address Info
+$("#update_address_info").click(function () {
+    $("#address_info").hide();
+    $("#update_address_info").hide();
+    $("#address_info_input_form").show();
+});
 
-    addressInfo.style.display = "none";
-    updateAddressButton.style.display = "none";
-    addressInfoInputForm.style.display = "block";
-}
+$("#cancelAddress").click(function () {
+    $("#address_info").show();
+    $("#update_address_info").show();
+    $("#address_info_input_form").hide();
+});
 
-const cancelAddressButton = document.getElementById("cancelAddress");
-cancelAddressButton.addEventListener("click", function () {
-    const addressInfo = document.getElementById("address_info");
-    const addressInfoInputForm = document.getElementById("address_info_input_form");
+// Get the value from the hidden input
+const memberId = $('#memberId').val();
 
-    addressInfo.style.display = "block";
-    updateAddressButton.style.display = "block";
-    addressInfoInputForm.style.display = "none";
+// Generate QR code
+$('#qrcode').qrcode({
+    text: memberId,
+    width: 128,
+    height: 128
+});
+
+//switch address
+$("#useAnotherAddress").change(function () {
+    if ($(this).is(":checked")) {
+        $("#addressForm").show();
+        $("#default_address").hide();
+    } else {
+        $("#addressForm").hide();
+        $("#default_address").show();
+    }
+});
+
+// Modal handling
+$('.change_profile_pic').on('click', function (e) {
+    e.preventDefault();
+    openModal('imageUpdateModal');
 });
 
 
+$('#changeInfo').on('click', function () {
+    openModal('personalInfoModal');
+});
+
+$('#closePersonalInfoModal').on('click', function () {
+    closeModal('personalInfoModal');
+});
+
+$('#changeAddress').on('click', function () {
+    openModal('addressModal');
+});
+
+$('#closeAddressModal').on('click', function () {
+    closeModal('addressModal');
+});
+
+$('#proceedToCheckOut').on('click', function () {
+    openModal('checkOutModal');
+});
+
+$('#checkOutButton').on('click', function () {
+    openModal('checkOutModal');
+});
 
 
+// Close checkout modal
+$('#closeCheckOutModal').on('click', function () {
+    closeModal('checkOutModal');
+});
+
+// Convert text to uppercase
+$('[data-upper]').on('input', function (e) {
+    const a = e.target.selectionStart;
+    const b = e.target.selectionEnd;
+    e.target.value = e.target.value.toUpperCase();
+    e.target.setSelectionRange(a, b);
+});
+// Photo preview
+$('label.upload input[type=file]').on('change', function (e) {
+    const f = e.target.files[0];
+    const img = $('#userPic')[0];
+
+    if (!img) return;
+
+    img.dataset.src ??= img.src;
+
+    if (f?.type.startsWith('image/')) {
+        img.src = URL.createObjectURL(f);
+    } else {
+        img.src = img.dataset.src;
+        e.target.value = '';
+    }
+});
+
+let dropArea = $('#dropArea');
+let fileInput = $('#photo');
+
+dropArea.on('dragenter dragover', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    dropArea.addClass('dragover');
+});
+
+dropArea.on('dragleave dragend drop', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    dropArea.removeClass('dragover');
+});
+
+dropArea.on('drop', function (event) {
+    let files = event.originalEvent.dataTransfer.files;
+    fileInput[0].files = files;
+    fileInput.trigger('change'); // Trigger change event for preview
+});
+
+dropArea.on('click', function () {
+    fileInput.click();
+});
+
+// Close modal and reset image preview and input
+$('#modalCloseImageBtn').on('click', function () {
+    const img = $('#userPic')[0];
+    const fileInput = $('label.upload input[type=file]')[0];
+
+    // Reset the image source
+    if (img.dataset.src) {
+        img.src = img.dataset.src;
+    }
+
+    // Clear the file input
+    fileInput.value = '';
+
+    // Close the modal (assuming you have a closeModal function)
+    closeModal('imageUpdateModal');
+});
+
+// When the select all checkbox is checked or unchecked
+$('#selectAllItems').change(function () {
+    // Check or uncheck all checkboxes based on the select all checkbox
+    $('.checkBoxProduct').prop('checked', $(this).prop('checked'));
+});
+
+// If any individual checkbox is unchecked, uncheck the select all checkbox
+$('.checkBoxProduct').change(function () {
+    if (!$(this).prop('checked')) {
+        $('#selectAllItems').prop('checked', false);
+    }
+
+    // If all individual checkboxes are checked, also check the select all checkbox
+    if ($('.checkBoxProduct:checked').length == $('.checkBoxProduct').length) {
+        $('#selectAllItems').prop('checked', true);
+    }
+});
+
+});
+
+// Modal functions
 function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
+    $("#" + modalId).show();
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
+    $("#" + modalId).hide();
 }
 
-
-
-function toggleAddressForm() {
-    const addressForm = document.getElementById('addressForm');
-    const checkbox = document.getElementById('useAnotherAddress');
-    const default_address = document.getElementById('default_address');
-    if (checkbox.checked) {
-        addressForm.style.display = 'block';
-        default_address.style.display = 'none';
-    } else {
-        addressForm.style.display = 'none';
-        default_address.style.display = 'block';
-    }
-}
-
-function validateCheckOutForm() {
-    const checkBoxAnotherAddress = document.getElementById("useAnotherAddress");
-    const malaysia_postcode_pattern = /^\d{5}$/;
-    const phonePattern = /^01[0-46-9]\d{7,8}$|^0\d{1,2}\d{7,8}$/;
-    const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-    const address1 = document.getElementById("address1").value;
-    const address2 = document.getElementById("address2").value;
-    const city = document.getElementById("city").value;
-    const state = document.getElementById("state").value;
-    const postCode = document.getElementById("postcode").value;
-
-    const errors = [];
-
-    // Validate personal information fields
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-    const email = document.getElementById("email").value;
-    const tel = document.getElementById("tel").value;
-
-    if (firstName == "") {
-        errors.push("First Name should not be empty !");
-    }
-
-    if (lastName == "") {
-        errors.push("Last Name should not be empty !");
-    }
-
-    if (email == "") {
-        errors.push("Email should not be empty !");
-    } else if (!email.match(emailPattern)) {
-        errors.push("Please enter a valid email format");
-    }
-
-
-    if (tel == "") {
-        errors.push("Contact No should not be empty !");
-    } else if (!tel.match(phonePattern)) {
-        errors.push("Please Enter Malaysia Format")
-    }
-
-
-    if (checkBoxAnotherAddress.checked) {
-        if (address1 == "") {
-            errors.push("Address 1 should not be empty !");
-        }
-        if (address2 == "") {
-            errors.push("Address 2 should not be empty !");
-        }
-        if (city == "") {
-            errors.push("City should not be empty !");
-        }
-        if (state == "") {
-            errors.push("State should not be empty !");
-        }
-        if (postCode == "") {
-            errors.push("PostCode should not be empty !");
-        } else if (!postCode.match(malaysia_postcode_pattern)) {
-            errors.push("PostCode should consist of exactly 5 digits !");
-        }
-    }
-
-    const radios = document.getElementsByName("payment");
-    let paymentMethodSelected = false;
-
-    for (let i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            paymentMethodSelected = true;
-            const paymentMethod = radios[i].value;
-            if (['tng', 'grab', 'boost'].includes(paymentMethod)) {
-                const phoneNoEwallet = document.getElementById("phoneNoEwallet").value;
-                const passwordEwallet = document.getElementById("passwordEwallet").value;
-                if (phoneNoEwallet == "") {
-                    errors.push("Please fill in your e-wallet phone number");
-                }else if(!phoneNoEwallet.match(phonePattern)){
-                    errors.push("Please follow Malaysia phone format");
-                }
-                if (passwordEwallet == "") {
-                    errors.push("Please fill in your e-wallet password");
-                }
-            }
-            if (['maybank', 'publicBank', 'hongLeongBank'].includes(paymentMethod)) {
-                const cardName = document.getElementById("cardName").value;
-                const cardNo = document.getElementById("cardNo").value;
-                const expiredDate = document.getElementById("expiredDate").value;
-                const cvc = document.getElementById("cvc").value;
-                if (cardName == "") {
-                    errors.push("Please fill in the name on your card");
-                }
-                if (cardNo == "") {
-                    errors.push("Please fill in your card number");
-                }
-                if (expiredDate == "") {
-                    errors.push("Please fill in your card's expiration date");
-                }
-                if (cvc == "") {
-                    errors.push("Please fill in your card's CVC");
-                }
-            }
-            break;
-        }
-    }
-
-    if (!paymentMethodSelected) {
-        errors.push("Payment method is required !");
-    }
-
-    // Display errors in the errors_message div
-    const errorsMessageDiv = document.getElementById("errors_message");
-    errorsMessageDiv.innerHTML = ""; // Clear previous messages
-
-    const checkOutModal = document.getElementById("checkOutModal");
-    checkOutModal.style.display = "none";
-
-    if (errors.length > 0) {
-        errorsMessageDiv.innerHTML = ""; // Clear previous messages
-        errors.forEach(function (error, index) {
-            const p = document.createElement("p");
-            p.textContent = `${index + 1}. ${error}`; // Number the error messages
-            errorsMessageDiv.appendChild(p);
-        });
-        document.getElementById("errors").style.display = "block"; // Show the errors modal
-        return false; // Prevent form submission
-    }
-    window.location.href = "paymentSuccess.html"; // Redirect to payment success page
-    return true; // Allow form submission
-}
-
-
-
-$("#filter").click(function() {
-    $("#filterPanel").show();
-    $("#closeFilter").show();
-    $("#filter").hide();
-});
-
-$("#closeFilter").click(function() {
-    $("#filterPanel").hide();
-    $("#closeFilter").hide();
-    $("#filter").show();
-});

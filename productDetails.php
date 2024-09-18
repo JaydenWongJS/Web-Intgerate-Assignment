@@ -1,230 +1,320 @@
 <?php
-require('_base.php');
-include('_header.php');
 
+require('_base.php');
+
+// Get the product ID from the URL
+
+if (isset($_user)) {
+    $member_id = $_user->member_id;
+}
+
+if (is_get()) {
+    //for refresh and insert into cart puroses
+    $product_id = req('product_id');
+
+    $product = fetchProductDetails($product_id);
+
+    if (!$product) {
+        redirect("shop.php");
+    }
+
+    $attr_result = fetchProductAttributes($product_id);
+
+    // Ensure $attr_result is not empty and the property exists
+    if (!empty($attr_result) && isset($attr_result[0]->attributes_id)) {
+        $attribute_id = $attr_result[0]->attributes_id;
+    } else {
+        echo "<p>Attribute ID not found!</p>";
+    }
+
+
+    // Prepare the price range data
+    $product->price_range = [
+        'min' => min(array_column($attr_result, 'price')),
+        'max' => max(array_column($attr_result, 'price'))
+    ];
+
+    // Display errors if any
+    if (isset($_SESSION['errors'])) {
+        $_err = $_SESSION['errors'];
+        unset($_SESSION['errors']); // Clear the errors after displaying them
+    }
+
+    // Display errors if any
+    if (isset($_SESSION['option'])) {
+        $option = $_SESSION['option'];
+        unset($_SESSION['option']); // Clear the errors after displaying them
+    }
+} else {
+    echo "Not get method";
+}
+
+if (is_post()) {
+    $product_id = req('product_id');
+    $attribute_id = req('attribute_id');
+    $option = req('option');
+    $qty = req("qty");
+
+    if ($_user == null) {
+        temp("login_required_info", "Login are required to continue add to cart !");
+        redirect("productDetails.php?product_id=" . $product_id);
+    } else if ($_user->role == 'admin') {
+        temp("login_required_info", "<b class='fail'>Admin are not able to purchase products ! </b>");
+        redirect("productDetails.php?product_id=" . $product_id);
+    }
+    // Output the values for debugging
+    echo "<p>Product ID: " . htmlspecialchars($product_id) . "</p>";
+    echo "<p>Attribute ID: " . htmlspecialchars($attribute_id) . "</p>";
+    echo "<p>Option: " . htmlspecialchars($option) . "</p>";
+    echo "<p>Quantity: " . htmlspecialchars($qty) . "</p>";
+
+    if (empty($option)) {
+        $_err["option"] = "No option Selected";
+    } else {
+        $_SESSION['option'] = $option;
+    }
+
+    if (empty($qty)) {
+        $_err["qty"] = "Quantity is required.";
+    } else if ($qty < 1 || $qty > 10) {
+        $_err["qty"] = "Invalid quantity. Please enter a number between 1 and 10.";
+    }
+
+    if (empty($_err)) {
+        echo "No error occurred";
+
+        $query = "SELECT product_attribute_id FROM product_attributes WHERE product_id = ? AND attributes_id = ? AND option_id = ?";
+        $getProductAttributeIdStmt = $_db->prepare($query);
+        $getProductAttributeIdStmt->execute([$product_id, $attribute_id, $option]);
+
+
+        if ($getProductAttributeIdStmt->rowCount() > 0) {
+            $productAttributeId = $getProductAttributeIdStmt->fetchColumn();
+            echo "Product attribute id is: " . $productAttributeId;
+
+            // Check if the product is already in the cart for the current user
+            $query = "SELECT qty FROM cart WHERE product_attributes_id = ? AND member_id = ?";
+            $stmtCheckExistsCartUser = $_db->prepare($query);
+            $stmtCheckExistsCartUser->execute([$productAttributeId, $member_id]);
+
+            if ($stmtCheckExistsCartUser->rowCount() > 0) {
+                // Product already exists in the cart, update the quantity
+                $currentQtyInCart = $stmtCheckExistsCartUser->fetchColumn();
+                $currentQtyInCart += $qty;
+                $updateCartQuery = "UPDATE cart SET qty = ? WHERE product_attributes_id = ? AND member_id = ?";
+                $stmtUpdateCartQty = $_db->prepare($updateCartQuery);
+                $stmtUpdateCartQty->execute([$currentQtyInCart, $productAttributeId, $member_id]);
+                temp("add_cart_info", "Exists product : $productAttributeId qty has been increase in cart. <a style='color:white;' href='add_cart/cart.php'>View Cart</a> .");
+                redirect("/shop.php");
+            } else {
+                // Product does not exist in the cart, insert a new row
+                $query = "INSERT INTO cart (product_attributes_id, member_id, qty) VALUES (?, ?, ?)";
+                $stmt = $_db->prepare($query);
+                $stmt->execute([$productAttributeId, $member_id, $qty]);
+                if ($stmt->rowCount() > 0) {
+                    temp("add_cart_info", "$productAttributeId has been added to cart. <a style='color:white;' href='add_cart/cart.php'>View Cart</a> .");
+                    redirect("/shop.php");
+                } else {
+                    echo "Error adding product to cart: " . $stmt->errorInfo()[2];
+                }
+            }
+
+            unset($_SESSION['option']);
+        } else {
+            echo "No matching product attribute found.";
+        }
+    } else {
+        $_SESSION['errors'] = $_err;
+        redirect("productDetails.php?product_id=" . $product_id);
+    }
+}
 ?>
 
+<?php
+$title = "$product->product_name";
+include('_header.php');
+include('nav_bar.php');
+?>
+<div id="info"><?= temp("login_required_info"); ?></div>
+<div class="product-container">
+    <div class="product-image">
+        <img src="uploadsImage/productImage/<?= htmlspecialchars($product->product_image); ?>" alt="Product Image">
+    </div>
+    <form class="product-details" action="productDetails.php" method="post" novalidate>
+        <?= html_text_type("hidden", "product_id", " "); ?>
 
-    <div class="product-container">
-        <div class="product-image">
-            <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
+        <h1><?= htmlspecialchars($product->product_name); ?></h1>
+        <div>
+            <div class="rating">
+                <?php for ($i = 0; $i < floor($product->total_rating); $i++): ?>
+                    <i class="fas fa-star"></i>
+                <?php endfor; ?>
+            </div>
+            <p class="category"><?= htmlspecialchars($product->category_name); ?></p>
+            <p class="price" id="display_price"><?= getProductRangePrice((array)$product); ?></p>
         </div>
-        <div class="product-details">
-            <h1>Acer Nitro 5 2024</h1>
+        <div class="options">
+            <?= html_text_type("hidden", "attribute_id", " "); ?>
+            <label for="" class="spec"><?= htmlspecialchars($attr_result[0]->attributes_type); ?></label>
+            <div class="option_box">
+                <!-- <?php foreach ($attr_result as $attribute): ?>
+                    <input type="radio" class="input-radio" id="<?= htmlspecialchars($attribute->option_id); ?>" name="option" value="<?= htmlspecialchars($attribute->option_id); ?>">
+                    <label class="option" for="<?= htmlspecialchars($attribute->option_id); ?>"><?= htmlspecialchars($attribute->option_value); ?></label>
+                <?php endforeach; ?> -->
+                <?= html_radios_attr("option", $attr_result); ?>
+                <?= err("option", " "); ?>
+            </div>
+        </div>
+        <div class="clearAndQty_box">
             <div>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="category">Computer</p>
-                <p class="price">RM439.00</p>
+                <small class="clear-btn">Clear</small>
             </div>
-            <div class="options">
-                <label for="" class="spec">Spec</label>
-                <div class="option_box">
-                    <input type="radio" class="input-radio" id="12GB+128ROM" name="size" value="12GB+128ROM">
-                    <label class="option" for="12GB+128ROM">12GB+128ROM</label>
-
-                    <input type="radio" class="input-radio" id="12GB+512ROM" name="size" value="12GB+512ROM">
-                    <label class="option" for="12GB+512ROM">12GB+512ROM</label>
-
-                    <input type="radio" class="input-radio" id="12GB+1TB" name="size" value="12GB+1TB">
-                    <label class="option" for="12GB+1TB">12GB+1TB</label>
-
-                    <input type="radio" class="input-radio" id="12GB+1TB" name="size" value="12GB+1TB">
-                    <label class="option" for="12GB+1TB">12GB+1TB</label>
-
-                    <input type="radio" class="input-radio" id="12GB+1TB" name="size" value="12GB+1TB">
-                    <label class="option" for="12GB+1TB">12GB+1TB</label>
-
-                    <input type="radio" class="input-radio" id="12GB+1TB" name="size" value="12GB+1TB">
-                    <label class="option" for="12GB+1TB">12GB+1TB</label>
-
-                    <input type="radio" class="input-radio" id="12GB+1TB" name="size" value="12GB+1TB">
-                    <label class="option" for="12GB+1TB">12GB+1TB</label>
-                   
-                </div>
-
-            </div>
-            
-            <div class="clearAndQty_box">
-                <div>
-                    <small class="clear-btn">Clear</small>
-                </div>
-
-                <div class="qty_input">
-                    <label>QTY:</label>
-                    <input type="number" name="qty" value="1" id="qty"/>
-                </div>
-            </div>
-           
-            
-            
-            <div  style="text-align: center;">
-                <button id="add-to-cart">ADD TO CART</button>
-            </div>
-     
-        </div>
-    </div>
-    <div class="product-container">
-        <div class="tab-container">
-            <div class="tabs">
-                <button class="tab-link active_tab" data-tab="short">Description</button>
-                <button class="tab-link" data-tab="medium">Use Case</button>
-                <button class="tab-link" data-tab="long">Spec</button>
-            </div>
-            <div class="tab-content active_tab" id="short">
-                <h2>Descriptipon</h2>
-                <p>Praesent nonummy mi in odio. Nullam accumsan lorem in dui. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Nullam accumsan lorem in dui. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-            </div>
-            <div class="tab-content" id="medium">
-                <h2></h2>
-                <h2>Usage Scenarios and Case Studies</h2>
-                <p>Learn how our product can be utilized in different scenarios to achieve the best results. Here are a few examples:</p>
-                <h3>Business Use:</h3>
-                <p>Our product helps businesses streamline their operations, increase productivity, and reduce costs. Case Study: ABC Corp improved their workflow efficiency by 30%.</p>
-                <h3>Personal Use:</h3>
-                <p>Ideal for personal use, offering high performance for gaming, video editing, and more. Customer Review: "This product exceeded my expectations in every way."</p>
-                <h3>Educational Use:</h3>
-                <p>Perfect for students and educators, providing a powerful tool for learning and teaching. Case Study: XYZ School saw a 25% improvement in student engagement.</p>
-                <h3>Support and FAQs:</h3>
-                <p>For more information and support, visit our <a href="support-page-url">Support Page</a> and check our <a href="faq-page-url">FAQs</a>.</p>
-            
-            </div>
-            <div class="tab-content" id="long">
-                <h2>Spec</h2>
-                <p>This is the long section content.</p>
+            <div class="qty_input">
+                <label for="qty">QTY:</label>
+                <?= html_number("qty", '1', '10', '1', ''); ?>
+                <?= err("qty", " "); ?>
             </div>
         </div>
-    
+        <div style="text-align: center;">
+            <button type="submit" id="add-to-cart">ADD TO CART</button>
+        </div>
+    </form>
+</div>
+
+<div class="product-container">
+    <div class="tab-container">
+        <div class="tabs">
+            <button class="tab-link active_tab" data-tab="short">Description</button>
+            <button class="tab-link" data-tab="medium">Use Case</button>
+            <button class="tab-link" data-tab="long">Spec</button>
+        </div>
+        <div class="tab-content active_tab" id="short">
+            <h2>Description</h2>
+            <p><?= htmlspecialchars($product->description); ?></p>
+        </div>
+        <div class="tab-content" id="medium">
+            <h2>Usage Scenarios and Case Studies</h2>
+            <p><?= htmlspecialchars($product->use_case); ?></p>
+        </div>
+        <div class="tab-content" id="long">
+            <h2>Spec</h2>
+            <p><?= htmlspecialchars($product->spec); ?></p>
+        </div>
     </div>
 
 
-    <div class="review-container">
-        <form class="review_form">
-            <h2>Review Form: Product Name</h2>
-            <div class="star_rate">
-                <input type="radio" class="input-radio-star" id="1star" name="star" value="1">
-                <label class="star" for="1star">1 <i class="fas fa-star"></i></label>
-                <input type="radio" class="input-radio-star" id="2star" name="star" value="2">
-                <label class="star" for="2star">2 <i class="fas fa-star"></i></label>
-                <input type="radio" class="input-radio-star" id="3star" name="star" value="3">
-                <label class="star" for="3star">3 <i class="fas fa-star"></i></label>
-                <input type="radio" class="input-radio-star" id="4star" name="star" value="4">
-                <label class="star" for="4star">4 <i class="fas fa-star"></i></label>
-                <input type="radio" class="input-radio-star" id="5star" name="star" value="5">
-                <label class="star" for="5star">5 <i class="fas fa-star"></i></label>
-            </div>
 
-            <div class="review_comment">
-                <textarea  cols="50" rows="4" placeholder="Write your review here..."></textarea>
-            </div> 
-            <button type="submit" class="submit-btn">Submit Review</button>
-        </form>
+</div>
+<div class="review-container">
+    <div class="review-header">
+        <a class="writeReview" href="addReview.php" id="write-review">WRITE A REVIEW</a>
     </div>
 
-    
-<section class="product_container">
-    <h1 class="related-product-title">
-        <i class="fas fa-box"></i> Related Product
-    </h1>
+    <div class="review_comment_container">
 
-    <div class="all_product_box">
-            <div class="single_product">
-                <div class="tag">
-                    <span>Related Products</span>
+        <div class="reviews_comment">
+            <div class="review-item">
+                <div class="review-user">
+                    <img src="https://via.placeholder.com/50x50" alt="User Image" height="50" width="50">
+                    <span class="user-name">User Name</span>
                 </div>
-                <div class="product_image">
-                    <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
+                <div class="review-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere, ipsum eget fermentum luctus, justo eros viverra lectus, sed consectetur ligula nunc ac risus. Donec tristique, mauris at imperdiet dignissim, justo erat pulvinar lectus, ac faucibus felis velit nec velit.</p>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i> <!-- Assuming a 5-star rating system -->
+                    </div>
                 </div>
-                <h3 class="product_name">Acer Nitro</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="price">RM 100</p>
-                <a href="#" class="view_button">View</a>
+
+            </div>
+            <div class="seller_reply">
+                <p>jsjdssjdosjd</p>
             </div>
 
-            <div class="single_product">
-                <div class="tag">
-                    <span>Related Products</span>
-                </div>
-                <div class="product_image">
-                    <img src="image/hongLeongBank.png" alt="Product Image">
-                </div>
-                <h3 class="product_name">Product Name</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="price">RM 100</p>
-                <a href="#" class="view_button">View</a>
-            </div>
-            
+        </div>
 
-            <div class="single_product">
-                <div class="tag">
-                    <span>Related Products</span>
+        <div class="reviews_comment">
+            <div class="review-item">
+                <div class="review-user">
+                    <img src="https://via.placeholder.com/50x50" alt="User Image" height="50" width="50">
+                    <span class="user-name">User Name</span>
                 </div>
-                <div class="product_image">
-                    <img src="image/hongLeongBank.png" alt="Product Image">
+                <div class="review-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere, ipsum eget fermentum luctus, justo eros viverra lectus, sed consectetur ligula nunc ac risus. Donec tristique, mauris at imperdiet dignissim, justo erat pulvinar lectus, ac faucibus felis velit nec velit.</p>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i> <!-- Assuming a 5-star rating system -->
+                    </div>
                 </div>
-                <h3 class="product_name">Product Name</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="price">RM 100</p>
-                <a href="#" class="view_button">View</a>
             </div>
+        </div>
 
-            <div class="single_product">
-                <div class="tag">
-                    <span>Related Products</span>
-                </div>
-                <div class="product_image">
-                    <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
-                </div>
-                <h3 class="product_name">Acer Nitro</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="price">RM 100</p>
-                <a href="#" class="view_button">View</a>
-            </div>
 
-           
+
     </div>
-</section>
+</div>
 
-  
+
+
 <script>
     $(document).ready(function() {
-        $('.clear-btn').on('click', function() {
+        var initialPriceRange = $('#display_price').html();
+
+        function updatePrice() {
+            var selectedOptionId = $('input[type="radio"][name="option"]:checked').val();
+            var productId = <?= json_encode($product_id); ?>;
+
+            if (selectedOptionId) {
+                $.ajax({
+                    url: 'fetch_product_option_price.php',
+                    method: 'POST',
+                    data: {
+                        option_id: selectedOptionId,
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        $('#display_price').html(response);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX error:', textStatus, errorThrown);
+                    }
+                });
+            }
+        }
+
+        function resetPrice() {
             $('.input-radio:checked').prop('checked', false);
+            $('#display_price').html(initialPriceRange);
+        }
+
+        function activateTab(tabId) {
+            $('.tab-link').removeClass('active_tab');
+            $('[data-tab="' + tabId + '"]').addClass('active_tab');
+            $('.tab-content').removeClass('active_tab');
+            $('#' + tabId).addClass('active_tab');
+        }
+
+        // Bind change event to update price when an option is selected
+        $('input[type="radio"][name="option"]').on('change', updatePrice);
+
+        // Bind click event to reset price when 'Clear' button is clicked
+        $('.clear-btn').on('click', resetPrice);
+
+        // Bind click event to activate tabs
+        $('.tab-link').on('click', function() {
+            activateTab($(this).data('tab'));
         });
 
-        
-    $('.tab-link').on('click', function() {
-        var tabId = $(this).data('tab');
-
-        $('.tab-link').removeClass('active_tab');
-        $(this).addClass('active_tab');
-
-        $('.tab-content').removeClass('active_tab');
-        $('#' + tabId).addClass('active_tab');
+        // Ensure the price is updated based on the selected option when the page loads
+        updatePrice();
     });
+</script>
 
-    });
-    </script>
-    
-    <?php
-    include('_footer.php');
-    ?>
+
+<?php include('_footer.php'); ?>

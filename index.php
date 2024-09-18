@@ -1,13 +1,18 @@
 <?php $title = "Home" ?>
 <?php
+require_once('_base.php');
 include('_header.php');
-require('_base.php');
+include('nav_bar.php');
+
+clear_cart();
 ?>
 
 <?php
-$welcome_message = temp('welcome_message');
-?>
+if ($_user) {
+    $_user->role == 'member' ? $welcome_message = temp('welcome_message') : "";
+}
 
+?>
 <?php if (isset($welcome_message)) { ?>
     <div class="overlay_all" id="welcomeModal" style="display: block;">
         <div class="modal">
@@ -58,123 +63,123 @@ $welcome_message = temp('welcome_message');
 
 
 <section class="latest_product_container">
- 
-        <div class="latest_product_box">
-            <span class="arrow_left"><i class="fas fa-arrow-left"></i></span>
-            <span class="arrow_right"><i class="fas fa-arrow-right"></i></span>
-            <div class="slide">
-                <!-- Slide 1 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Acer Nitro</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
-                </div>
 
-                <!-- Slide 2 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/hongLeongBank.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Product Name</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
+    <div class="latest_product_box">
+        <span class="arrow_left"><i class="fas fa-arrow-left"></i></span>
+        <span class="arrow_right"><i class="fas fa-arrow-right"></i></span>
+        <div class="slide">
+            <!-- Slide 1 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
                 </div>
+                <div class="product_image">
+                    <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Acer Nitro</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
+            </div>
 
-                <!-- Slide 3 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/hongLeongBank.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Product Name</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
+            <!-- Slide 2 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
                 </div>
+                <div class="product_image">
+                    <img src="image/hongLeongBank.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Product Name</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
+            </div>
 
-                <!-- Slide 4 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Acer Nitro</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
+            <!-- Slide 3 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
                 </div>
+                <div class="product_image">
+                    <img src="image/hongLeongBank.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Product Name</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
+            </div>
 
-                <!-- Slide 5 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/hongLeongBank.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Product Name</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
+            <!-- Slide 4 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
                 </div>
+                <div class="product_image">
+                    <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Acer Nitro</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
+            </div>
 
-                <!-- Slide 6 -->
-                <div class="latest_product">
-                    <div class="tag">
-                        <span>Latest Products</span>
-                    </div>
-                    <div class="product_image">
-                        <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
-                    </div>
-                    <h3 class="product_name">Acer Nitro</h3>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="price">RM 100</p>
-                    <a href="#" class="view_button">View</a>
+            <!-- Slide 5 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
                 </div>
+                <div class="product_image">
+                    <img src="image/hongLeongBank.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Product Name</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="latest_product">
+                <div class="tag">
+                    <span>Latest Products</span>
+                </div>
+                <div class="product_image">
+                    <img src="image/Nitro_5_AGW_KSP08-3.png" alt="Product Image">
+                </div>
+                <h3 class="product_name">Acer Nitro</h3>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="price">RM 100</p>
+                <a href="#" class="view_button">View</a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!--CATEGORY LIST SECTION-->
+<!--CATEGORY LIST SECTION-->
 <div class="cat_ind">
     <h1 class="collaborate_title">Collaborate Partners</h1>
     <div class="category_list_index">
