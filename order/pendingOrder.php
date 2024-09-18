@@ -1,37 +1,36 @@
 <?php $title = "MyPending Order" ?>
 <?php
-require_once('../_base.php');
-include('../_header.php');
-include('../nav_bar.php');
+require_once('_base.php');
+include('_header.php');
+include('nav_bar.php');
 ?>
 
 <?php
 
 if (is_post() && req('order_id') && req('payment_id')) {
     $orderId = req('order_id'); // Get the order ID from the form
-    $payment_id = req('payment_id'); // Get the order ID from the form
+    $payment_id = req('payment_id'); // Get the payment ID from the form
     $action = req('action'); // Get the action from the form ('complete' or 'cancel')
 
     if ($action === 'cancel') {
         // Update order status to Cancelled
-        $updateSql = "UPDATE orders SET order_status = 'Cancelled', order_cancelled_date=NOW() WHERE order_id =? AND member_id =?";
+        $updateSql = "UPDATE orders SET order_status = 'Cancelled' WHERE order_id = ? AND member_id = ?";
         $stm = $_db->prepare($updateSql);
         $stm->execute([$orderId, $_user->member_id]);
 
-        $updatePaymentSql = "UPDATE payment SET payment_status = 'Cancelled' WHERE payment_id =?";
+        $updatePaymentSql = "UPDATE payment SET payment_status = 'Cancelled' WHERE payment_id = ?";
         $updatePaymentStmt = $_db->prepare($updatePaymentSql);
         $updatePaymentStmt->execute([$payment_id]);
 
-        temp("order_status", "$orderId" . "," . " Has Been Cancelled");
+        temp("order_status", "$orderId has been cancelled.");
     } elseif ($action === 'paid') {
         // Generate a unique token
         $payment_duration_token = sha1(uniqid() . rand());
 
         $insertPaymentTokenQuery = '
-        
-                  INSERT INTO token (token_id, expire, member_id) 
-             VALUES (?, ADDTIME(NOW(), "00:05"), ?);
-           ';
+            INSERT INTO token (token_id, expire, member_id) 
+            VALUES (?, ADDTIME(NOW(), "00:05"), ?)
+        ';
         $stmt = $_db->prepare($insertPaymentTokenQuery);
         $stmt->execute([$payment_duration_token, $_user->member_id]);
 
@@ -41,15 +40,32 @@ if (is_post() && req('order_id') && req('payment_id')) {
     }
 }
 
-// SQL query to fetch orders where member_id matches
-$sql = "SELECT *
-FROM orders o JOIN payment p ON o.payment_id = p.payment_id
-WHERE o.member_id = ? 
-    AND o.order_status = 'Pending'
-    ";
-$stm = $_db->prepare($sql);
-$stm->execute([$_user->member_id]);
-$orders = $stm->fetchAll();
+// Check if searchOrder input is present
+$searchOrder = '';
+if (is_post() && req('searchOrder')) {
+    $searchOrder = req('searchOrder');
+    // SQL query to find the order by its ID for the logged-in member
+    $sql = "SELECT * 
+            FROM orders o 
+            JOIN payment p ON o.payment_id = p.payment_id 
+            WHERE o.member_id = ? 
+            AND o.order_id = ? 
+            AND o.order_status = 'Pending'";
+    
+    $stm = $_db->prepare($sql);
+    $stm->execute([$_user->member_id, $searchOrder]);
+    $orders = $stm->fetchAll();
+} else {
+    // SQL query to fetch orders where member_id matches
+    $sql = "SELECT *
+            FROM orders o 
+            JOIN payment p ON o.payment_id = p.payment_id
+            WHERE o.member_id = ? 
+            AND o.order_status = 'Pending'";
+    $stm = $_db->prepare($sql);
+    $stm->execute([$_user->member_id]);
+    $orders = $stm->fetchAll();
+}
 
 $totalOrderIds = count($orders);
 
@@ -61,13 +77,13 @@ $totalOrderIds = count($orders);
         <div class="my_order_title">
             <h2><i class="fas fa-receipt"></i> PENDING ORDERS</h2>
         </div>
-        <form action="myOrderSearch.php" method="post" class="search-form">
-            <input type="search" name="searchOrder" id="searchOrder" class="search-order-input" placeholder="Search by Order ID" />
+        <form action="myOrder.php" method="post" class="search-form">
+            <input type="search" name="searchOrder" id="searchOrder" class="search-order-input" placeholder="Search by Order ID" value="<?= htmlspecialchars($searchOrder) ?>" />
             <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
         </form>
         <form id="sortingForm" class="sorting-form" method="post">
-            <select class="form-select" name="sorting" onchange="this.form.submit()">
-                <option value="" disabled>Sort Order</option>
+            <select class="form-select" name="sorting" onchange="this.form.submit()" disabled>
+                <option value="pending" selected>Pending (Fixed)</option>
                 <option value="delivering">Delivering</option>
                 <option value="cancelled">Cancelled</option>
                 <option value="packing">Packing</option>
@@ -78,8 +94,7 @@ $totalOrderIds = count($orders);
 
     <div class="order_container_center">
         <a class="pending_order" href="myOrder.php">
-            <i class="fas fa-list" style="color: #007bff;"></i>
-            <p>All</p>
+            <i class="fas fa-list" style="color: #007bff;"></i><p>All</p>
             <span class="pending_order_rounded"><?= countCurrentOrder($_user->member_id) ?></span>
         </a>
         <div class="total-order-count">
@@ -108,7 +123,7 @@ $totalOrderIds = count($orders);
                             <td><?= htmlspecialchars(date('d/m/Y', strtotime($order->order_date))) ?></td>
                             <td><?= htmlspecialchars(ucfirst($order->order_status)) ?></td>
                             <td><?= htmlspecialchars(number_format($order->subtotal, 2)) ?></td>
-                            <td><?= $order->payment_status ?></td>
+                            <td><?= htmlspecialchars($order->payment_status) ?></td>
                             <td>
                                 <!-- For Paid Now -->
                                 <form action="" method="post" id="completeForm_<?= htmlspecialchars($order->order_id) ?>" style="display:inline;">
@@ -125,7 +140,6 @@ $totalOrderIds = count($orders);
                                     <input type="hidden" name="action" value="cancel">
                                     <button class="btn cancel-btn" type="submit" onclick="confirmCancel(event, 'cancelForm_<?= htmlspecialchars($order->order_id) ?>')">Cancel</button>
                                 </form>
-
                             </td>
 
                             <td>
@@ -153,31 +167,32 @@ $totalOrderIds = count($orders);
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="6">No any orders found.</td>
+                        <td colspan="6">No orders found.</td>
                     </tr>
                 </tbody>
             </table>
-        <?php endif; ?>
         </div>
+    <?php endif; ?>
+</div>
 
-        <script>
-            // Function to handle order cancellation with a warning
-            function confirmCancel(event, formId) {
-                if (confirm("⚠️ Warning: Are you sure you want to cancel this order? This action cannot be undone.")) {
-                    document.getElementById(formId).submit(); // Submit the form with the specific ID if the user confirms
-                } else {
-                    event.preventDefault(); // Cancel the default form submission if user does not confirm
-                }
-            }
+<script>
+    // Function to handle order cancellation with a warning
+    function confirmCancel(event, formId) {
+        if (confirm("⚠️ Warning: Are you sure you want to cancel this order? This action cannot be undone.")) {
+            document.getElementById(formId).submit(); // Submit the form with the specific ID if the user confirms
+        } else {
+            event.preventDefault(); // Cancel the default form submission if user does not confirm
+        }
+    }
 
-            // Function to confirm order completion with a reminder to double-check
-            function comfirmPaid(event, formId) {
-                if (confirm("Do you want to paid for this order ?")) {
-                    document.getElementById(formId).submit(); // Submit the form with the specific ID if the user confirms
-                } else {
-                    event.preventDefault(); // Cancel the default form submission if user does not confirm
-                }
-            }
-        </script>
+    // Function to confirm order completion with a reminder to double-check
+    function comfirmPaid(event, formId) {
+        if (confirm("Do you want to mark this order as paid?")) {
+            document.getElementById(formId).submit(); // Submit the form with the specific ID if the user confirms
+        } else {
+            event.preventDefault(); // Cancel the default form submission if user does not confirm
+        }
+    }
+</script>
 
-        <?php include('../_footer.php'); ?>
+<?php include('_footer.php'); ?>
