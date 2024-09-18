@@ -1,43 +1,72 @@
 <?php
-$title = "Order Details";
-include('../../_base.php'); // Include base.php for database connection
-include('../_headerAdmin.php');
-include('../_sideBar.php');
 
-// Get the order ID from the GET parameter
+$title = "Order Details";
+include('_headerAdmin.php');
+include('../_base.php'); // Include base.php for database connection
+
+auth("admin");
+
+$member_id = $_user->member_id;
+
+// Get the order ID and order status from the GET parameters
 $orderId = isset($_GET['orderId']) ? $_GET['orderId'] : '';
+$orderStatus = isset($_GET['orderStatus']) ? $_GET['orderStatus'] : '';
 
 // Validate orderId
 if (!$orderId) {
     die('Invalid Order ID');
 }
 
+// Display appropriate message based on order status
+if ($orderStatus === 'Completed') {
+    $message = 'The order has been completed. You can only view the details.';
+} elseif ($orderStatus === 'Cancelled') {
+    $message = 'This order has been cancelled. You can only view the details.';
+} else {
+    $message = ''; // No message for other statuses
+}
+
 // Handle form submissions for status updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['updateStatus'])) {
         $status = $_POST['status']; // Get the status from the form submission
+        $currentTime = date("Y-m-d H:i:s"); // Get the current timestamp
 
         // Validate status
         $validStatuses = ['Cancelled', 'Delivering', 'Delivered'];
         if (in_array($status, $validStatuses)) {
-            // Update order status in the database
-            $sqlUpdate = "UPDATE `orders` SET `order_status` = ? WHERE `order_id` = ?";
-            $stmUpdate = $_db->prepare($sqlUpdate);
-            $stmUpdate->execute([$status, $orderId]);
+            // Prepare SQL based on status
+            if ($status === 'Cancelled') {
+                $sqlUpdate = "UPDATE `orders` SET `order_status` = ?, `order_cancelled_date` = ? WHERE `order_id` = ?";
+                $stmUpdate = $_db->prepare($sqlUpdate);
+                $stmUpdate->execute([$status, $currentTime, $orderId]);
+            } elseif ($status === 'Delivered') {
+                $sqlUpdate = "UPDATE `orders` SET `order_status` = ?, `order_delivered_time` = ? WHERE `order_id` = ?";
+                $stmUpdate = $_db->prepare($sqlUpdate);
+                $stmUpdate->execute([$status, $currentTime, $orderId]);
+            } else {
+                // Update order status only for 'Delivering'
+                $sqlUpdate = "UPDATE `orders` SET `order_status` = ? WHERE `order_id` = ?";
+                $stmUpdate = $_db->prepare($sqlUpdate);
+                $stmUpdate->execute([$status, $orderId]);
+            }
 
-            // Redirect to adminOrder.php
-            redirect('adminOrder.php');
+            // Redirect to adminOrder.php after the update
+            header('Location: adminOrder.php');
             exit;
         }
     }
 }
 
 // Retrieve order details
-$sqlOrder = "SELECT `member_id`, `order_date`, `order_created_time`, `order_delivered_time`, `order_status`, `subtotal`, 
- `payment_id`, `address1`, `address2`, `city`, `state`, `postcode` FROM `orders` WHERE order_id=?";
+$sqlOrder = "SELECT * FROM `orders` WHERE order_id=?";
 $stmOrder = $_db->prepare($sqlOrder);
 $stmOrder->execute([$orderId]);
 $order = $stmOrder->fetch(PDO::FETCH_OBJ);
+
+if (!$order) {
+    die('Order not found');
+}
 
 // Check current status
 $currentStatus = $order->order_status;
@@ -94,6 +123,7 @@ foreach ($orderDetails as $detail) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,25 +154,55 @@ foreach ($orderDetails as $detail) {
 <body>
     <div class="container">
         <main>
+            <span class="order-status" style="
+                <?php 
+                    if ($order->order_status == 'Pending') {
+                        echo 'background-color: #ff8c00;';
+                    } elseif ($order->order_status == 'Packing') {
+                        echo 'background-color: #ffd700;';
+                    } elseif ($order->order_status == 'Delivered') {
+                        echo 'background-color: green;';
+                    } elseif ($order->order_status == 'Delivering') {
+                        echo 'background-color: blue;';
+                    } elseif ($order->order_status == 'Cancelled') {
+                        echo 'background-color: red;';
+                    }
+                ?>
+            ">
+                <?= htmlspecialchars(ucfirst($currentStatus)) ?>
+            </span>
+            
             <div class="order-header">
                 <h1>Order #<?= htmlspecialchars($orderId) ?></h1>
-                <span class="order-status"><?= htmlspecialchars(ucfirst($currentStatus)) ?></span>
+                
                 <div class="order-dates">
-                    <p>Created on: <?= htmlspecialchars(date('F j, Y, g:i a', strtotime($order->order_created_time))) ?></p>
-                    <p>Paid on: <?= htmlspecialchars(date('F j, Y, g:i a', strtotime($order->order_date))) ?></p>
+                    <p>Created on: <?= $order->order_created_time ? htmlspecialchars(date('F j, Y, g:i a', strtotime($order->order_created_time))) : 'N/A' ?></p>
+                    <p>Paid on: <?= $order->order_date ? htmlspecialchars(date('F j, Y, g:i a', strtotime($order->order_date))) : 'N/A' ?></p>
                 </div>
+
                 <div class="order-actions">
                     <form method="post" onsubmit="return confirmAction('cancelOrder');">
                         <input type="hidden" name="status" value="Cancelled">
-                        <button type="submit" name="updateStatus" class="cancel-order" <?= $currentStatus === 'Cancelled' ? 'disabled' : '' ?>>Cancel Order</button>
+                        <button type="submit" name="updateStatus" class="cancel-order" 
+                            <?= in_array($currentStatus, ['Completed', 'Cancelled', 'Delivered']) ? 'disabled' : '' ?>>
+                            Cancel Order
+                        </button>
                     </form>
+
                     <form method="post" onsubmit="return confirmAction('readyToShip');">
                         <input type="hidden" name="status" value="Delivering">
-                        <button type="submit" name="updateStatus" class="ready-to-ship" <?= $currentStatus === 'Cancelled' ? 'disabled' : '' ?>>Ready To Ship</button>
+                        <button type="submit" name="updateStatus" class="ready-to-ship"
+                            <?= in_array($currentStatus, ['Completed', 'Cancelled', 'Delivered', 'Pending', 'Delivering']) ? 'disabled' : '' ?>>
+                            Ready To Ship
+                        </button>
                     </form>
+
                     <form method="post" onsubmit="return confirmAction('parcelArrived');">
                         <input type="hidden" name="status" value="Delivered">
-                        <button type="submit" name="updateStatus" class="parcel-arrived" <?= in_array($currentStatus, ['Cancelled', 'Delivered']) ? 'disabled' : '' ?>>Parcel Arrived</button>
+                        <button type="submit" name="updateStatus" class="parcel-arrived"
+                            <?= in_array($currentStatus, ['Completed', 'Cancelled', 'Packing', 'Delivered', 'Pending']) ? 'disabled' : '' ?>>
+                            Parcel Arrived
+                        </button>
                     </form>
                 </div>
             </div>
@@ -153,7 +213,7 @@ foreach ($orderDetails as $detail) {
                     <p>Member ID: <?= htmlspecialchars($order->member_id) ?></p>
                     <p>Payment Method: <?= htmlspecialchars($order->payment_id) ?></p>
                     <p>Shipping Address: <?= htmlspecialchars($order->address1) ?>, <?= htmlspecialchars($order->address2) ?>, <?= htmlspecialchars($order->city) ?>, <?= htmlspecialchars($order->state) ?> <?= htmlspecialchars($order->postcode) ?></p>
-                    <p>Subtotal: RM <?= htmlspecialchars(number_format($order->subtotal, 2)) ?></p> <!-- Moved subtotal here -->
+                    <p>Subtotal: RM <?= htmlspecialchars(number_format($order->subtotal, 2)) ?></p>
                 </div>
             </div>
 
@@ -175,7 +235,7 @@ foreach ($orderDetails as $detail) {
                         <?php foreach ($productDetails as $product): ?>
                             <tr>
                                 <td><?= htmlspecialchars($product['name']) ?></td>
-                                <td><?= htmlspecialchars($product['type']) ?></td> <!-- Display type here -->
+                                <td><?= htmlspecialchars($product['type']) ?></td>
                                 <td><?= htmlspecialchars($product['description']) ?></td>
                                 <td><?= htmlspecialchars($product['qty']) ?></td>
                                 <td>RM <?= htmlspecialchars(number_format($product['qty'] * $product['price'], 2)) ?></td> <!-- Calculate total price -->
@@ -184,8 +244,13 @@ foreach ($orderDetails as $detail) {
                     </tbody>
                 </table>
             </div>
+
+            <div class="back-button">
+                <a href="adminOrder.php" class="button">Back to Orders</a>
+            </div>
         </main>
     </div>
 </body>
 </html>
-<?php include('../_footerAdmin.php') ?>
+
+<?php include('_footerAdmin.php') ?>
